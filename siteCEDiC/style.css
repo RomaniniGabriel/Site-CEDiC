@@ -1,0 +1,375 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+
+:root{
+    --text: black;
+    --bg: #fff;
+    --bgHeader: white;
+}
+
+*{
+    margin: 0;
+    size: 0;
+    box-sizing: border-box;
+    padding: 0;
+    text-decoration: none; 
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+html{
+    scroll-behavior: smooth; 
+}
+
+body{
+    font-size: 100%;
+    background-color: var(--bg);
+}
+
+#logo2Black{
+    display: none;
+}
+
+#logo2{
+    display: block;
+}
+
+@media(prefers-color-scheme: dark) {
+    body{
+        --bg:#181818;
+        --text:#fff;
+        --bgHeader:#212121;
+    }
+
+    #logo2 {
+        display: none;
+    }
+
+    #logo2Black {
+        display: block;
+    }
+}
+
+/*---------------Cabeçalho---------------------------*/
+
+.cabecalho{
+    display: flex;
+    flex-wrap: wrap; /*Responsividade para o cabeçalho*/
+    flex-direction: row;
+    align-items: center; /*Alinha os itens entre o topo e o rodapé. Centraliza verticalmente*/
+    justify-content: space-between; /*Alinha os itens horizontalmente*/
+    padding: 20px;
+    text-transform: uppercase; /*Independente do que foi inserido no html, o texto todo ficará em maiúsculo*/
+    font-size: 15px;
+    position: fixed; /*How to shrink a header on scroll?*/
+    top: 0;
+    width: 100%;
+    background-color: var(--bgHeader);
+    transition: 0.2s;
+}
+
+.logos{
+    width: 30%; /*Tamanho da div*/
+}
+
+.linkLogos{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.divLogos{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+#divLogos1{
+    width: 30%;
+}
+
+#divLogos2{
+    width: 50%;
+}
+
+#logo1{
+    width: 100%;
+}
+
+#logo2 {
+    width: 130%;
+    border-left: 1px solid var(--text);
+}
+
+#logo2Black{
+    width: 130%;
+    border-left: 1px solid var(--text);
+}
+
+.menu{
+    display: flex;
+    gap: 32px;
+}
+
+nav > ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+li{
+    width: 120px;
+    margin: 4px;
+    list-style-type: none; /*Bolinha que aparce junto das listas por padrão nas listas é excluído*/
+}
+
+li a{
+    display: flex; /*O link ocupa o mesmo espaço do li*/
+    text-decoration: none; /*Remove o underline do link*/
+
+    border-radius: 4px;
+    padding: 4px;
+    background-color: rgb(0, 132, 74); /*por padrão, o texto ficará com cor verde */
+    color: white;
+
+    height: 3rem; /*Altura do "botão" do menu*/ /*3rem = 3 x altura padrão do texto no navegador. Se o tamanho padrão for 16px, então 3rem = 3 x 16 = 48px*/
+    justify-content: center;
+    align-items: center;
+
+    transition-duration: 200ms;
+}
+
+li a:hover{ /*hover é quando o cursor passa por cima do elemento*/
+    background-color: white; /*quando o cursor passa por cima da caixa, a caixa fica branca*/
+    color: rgb(0, 132, 74); /*e o texto fica verde*/
+    border: 1px solid rgb(0, 132, 74);
+    transform: scale(0.90);
+}
+
+li a:active{ /*active é quando o elemento é clicado*/
+    transform: scale(0.95); /*scale - diminui o elemento para dar uma impressão de clique*/
+}
+
+nav li{
+    position: relative; /*Define o item da lista "principal" como referência para a lista "secundária". Ou seja, todos os valores de posicionamento da segunda lista se darão em relação a este item. Se não fosse assim, a referência seria a página.
+    -Esta propriedade cria um outro item de comparação. Assim como a página é o elemento de referência padrão, quando se declara este atributo desta forma, cria-se outra referência, na qual todos os itens "filhos" do li passarão a utilizar como referência.
+    -Neste caso, só há uma lista não ordenada (ul) como filha do li, mas se houvessem mais, todos estes filhos seguiriam as referências posicionais do li, já que este passou a ser a nova referência para eles quando se declara "position: relative;"*/
+}
+
+nav li ul{ /*tratará sobre a lista secundária*/
+    display: none; /*"Esconde"/não exibe o menu secundário de imediato*/
+    position: absolute; /*Declara que o posicionamento deste item não irá interferir no posicionamento de outros elementos*/
+    z-index: 1; /*Semelhante ao PowerPoint, "traz para frente" o sub-menu, sobrepondo-o a outros elementos que venham a ocupar a tela.*/
+}
+
+nav li:hover > ul{
+    display: block /*Quando o cursor passar pelo li, a lista secundária (ul) aparecerá (justamente a função da variável "display")*/
+}
+
+@media (max-width: 1040px){
+    nav > ul {
+        flex-direction: column;
+    }
+
+    nav li{
+        position: relative;
+    }
+
+    nav li ul{
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: -4px ;
+    }
+}
+
+/*---------------Cabeçalho---------------------------*/
+
+/*------------------Main---------------------------*/
+
+.principal{
+    display: flex;
+    flex-wrap: wrap; /*Responsividade para o corpo*/
+    flex-direction: column;
+    padding-top: 105px;
+}
+
+#secaoChamamento{
+    background-image: url(imagens/banner.jpg);
+    background-repeat: no-repeat; /*a imagem não repete, por mais que haja mais conteúdo do que o seu tamanho possa cobrir*/
+    background-attachment: local; /*Conforme há a rolagem, a imagem fica estática. Ou seja, não acompanha o conteúdo*/
+    background-size: cover; /*a imagem cobrirá todo o viewport/tela (mas somente uma vez)*/
+    height: 580px;
+    background-position: center;
+}
+
+#comandos{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    font-size: 30px;
+    color: white;
+    text-shadow: 8px 8px 10px black;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.botoes{
+    width: 200px;
+    border-style: none;
+    background-color: transparent;
+}
+
+#botoes{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 15px;
+    gap: 20px;
+}
+
+.botoes a{
+    display: flex; /*O link ocupa o mesmo espaço do li*/
+    text-decoration: none; /*Remove o underline do link*/
+    color: white;
+    border: 5px solid transparent;
+    border-radius: 30px;
+    background-color: rgb(0, 132, 74);
+    font-size: medium;
+    text-transform: uppercase;
+
+    height: 3rem; /*Altura do "botão" do menu*/ /*3rem = 3 x altura padrão do texto no navegador. Se o tamanho padrão for 16px, então 3rem = 3 x 16 = 48px*/
+    justify-content: center;
+    align-items: center;
+
+    transition-duration: 200ms;
+}
+
+.botoes a:hover{ /*hover é quando o cursor passa por cima do elemento*/
+    background-color: white; /*quando o cursor passa por cima da caixa, a caixa fica branca*/
+    color: rgb(0, 132, 74); /*e o texto fica verde*/
+    border: 1px solid rgb(0, 132, 74);
+    transform: scale(0.90);
+}
+
+.botoes a:active{ /*active é quando o elemento é clicado*/
+    transform: scale(0.95); /*scale - diminui o elemento para dar uma impressão de clique*/
+}
+
+#secaoMateriasDosExperimentos{
+    background-color: var(--bg);
+    color: var(--text);
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#materias{
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center; /*Alinha os itens entre o topo e o rodapé. Centraliza verticalmente*/
+    justify-content: space-around; /*Alinha os itens horizontalmente*/
+    padding: 30px;
+
+}
+
+#textoMaterias{
+    font-size: 25px;
+    text-align: center;
+}
+
+.card{
+    width: 180px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    text-align: center;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+    box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.3);
+}
+
+.imgMateria{
+    width: 80px;
+}
+
+h4{
+    font-size: larger;
+    color: white;
+}
+
+#cardFisica{
+    background-color: rgb(255, 116, 47)
+}
+
+#cardBiologia{
+    background-color: rgb(52, 205, 72);
+}
+
+#cardAstronomia{
+    background-color: rgb(37, 37, 37);
+}
+
+#cardMatematica{
+    background-color: lightskyblue;
+}
+
+#cardPedagogia{
+    background-color: rgb(227, 0, 227);
+}
+
+#cardQuimica{
+    background-color: rgb(255, 130, 134);
+}
+
+.card:hover{ /*quando o cursor passa por cima do elemento, ele diminui*/
+    transform: scale(1.1);
+}
+
+.card a:active{ /*active é quando o elemento é clicado*/
+    transform: scale(0.95); /*scale - diminui o elemento para dar uma impressão de clique*/
+}
+
+#espacoFisico{
+    width: 100%;
+    height: 50%;
+    background-color: rgb(0, 132, 74);
+    color: rgb(235, 235, 235);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 50px 0px 50px 0px;
+}
+
+#plantaBaixaCedic{
+    width: 25%;
+    border-radius: 10px;
+}
+
+#textoEspacoFisico{
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    width: 40%;
+    text-align: justify;
+
+    font-size: large;
+    align-content: center;
+}
+
+#textoEspacoFisico h3{
+    padding: 6px 0px 24px 0px;
+    text-align: center;
+}
+
+#secaoMateriasDosExperimentos{
+    scroll-margin-top: 150px;
+}
