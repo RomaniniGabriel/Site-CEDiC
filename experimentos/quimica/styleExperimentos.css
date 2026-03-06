@@ -1,0 +1,68 @@
+.capa{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.divCapa{
+    width: 600px;
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.imgCapa{
+    width: 50%;
+    border-radius: 5px;
+}
+
+.informacoesExperimento{
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch; 
+    justify-content: space-around;
+    
+}
+
+.sobreExperimento, .linksUteis{
+    width: 48%;
+    border-top: 2px solid rgb(0, 132, 74);
+    border-bottom: 2px solid rgb(0, 132, 74);
+    text-align: justify;
+}
+
+h3{
+    text-align: center;
+    padding-top: 10px;
+}
+
+.tabelaLinks{
+    width: 100%;
+}
+
+.tabelaLinks th, .tabelaLinks td{
+    width: 50%;
+    height: 100px;
+    text-align: center;
+    padding: 4px;
+}
+
+.tabelaLinks th{
+    text-align: left;
+}
+
+.tabelaLinks a:link{
+    color: rgb(0, 132, 74);
+    text-decoration: none;
+}
+
+.tabelaLinks a:visited{
+    color: rgb(0, 132, 74);
+    text-decoration: none;
+}
+
+.tabelaLinks a:hover{
+    color: rgb(0, 199, 113);
+    text-decoration: underline;
+}
