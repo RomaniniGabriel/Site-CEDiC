@@ -36,8 +36,8 @@
                         <li><a href="experimentos/quimica/indexQuimica.html">Química</a></li>
                     </ul>
                 </li>
-                <li><a class="menuItem" href="#secaoEspacoFisico">Projetos</a></li> <!--Mudar o link, pois vou criar uma página só para as iniciativas do CEDiC (sejam próprias ou realizadas em conjunto)-->
-                <li><a class="menuItem" href="#sobre">Sobre</a></li>
+                <li><a class="menuItem" href="#secaoProjetos">Projetos</a></li>
+                <li><a class="menuItem" href="sobre.html">Sobre</a></li>
                 <li><a href="#visitas">Visitas</a></li>
             </ul>
         </nav>
@@ -101,34 +101,73 @@
             </div>
         </section>
 
-        <section class="secao" id="secao-O-Que-E">
-            <div id="espaco-O-Que-E">
-                <img id="fachadaCedic" src="imagens/plantaBaixaCedic.jpg" alt="Imagem da fachada do prédio do CEDiC">
-
-                <div id="texto-O-Que-E">
+        <section class="secao" id="secao-O-Que-E"> <!--Eu preciso mudar o design do texto nos <p> para deixar o mais claro possível que o cedic oferece visitas/ experimentos e realiza projetos de extensão. Informações do tipo: ser vinculado à Vice-Direção da FC, a extensão cresce no BR e no mundo e composição do time (exceto o docente responsável) podem ser movidas para a página "Sobre"-->
+            <div id="divConteudo">
+                <div class="textoDivConteudo">
                     <h3>O que é o CEDiC?</h3>
                     <p> O Centro de Extensão e Divulgação Científica (CEDiC) é um programa de extensão da Faculdade de Ciências (FC) da Universidade Estadual Paulista "Júlio de Mesquita Filho" (UNESP). Vinculado à Vice-Diretoria da FC, o programa tem como <bold>objetivo: desenvolver, agregar e auxiliar projetos e iniciativas extensionistas</bold> no âmbito da faculdade.</p>
                     <br>
-                    <p>O CEDiC surge com o papel de aproximar a universidade à sociedade na qual ela está inserida. Isso ocorre por meio de projetos que buscam trocar saberes entre ambas as partes, pautados pelo respeito e pela convicção que todos têm algo a ensinar e a aprender. Essa ideia, basilar no Ensino Superior, ganha cada vez mais destaque no Brasil e no mundo. Abaixo, você pode conferir as principais iniciativas realizadas pelo programa.</p>
+                    <p>O CEDiC surge com o papel de aproximar a universidade da sociedade na qual ela está inserida. Isso ocorre por meio de projetos que buscam trocar saberes entre ambas as partes, pautados pelo respeito e pela convicção que todos têm algo a ensinar e a aprender. Essa ideia, basilar no Ensino Superior, ganha cada vez mais destaque no Brasil e no mundo. Abaixo, você pode conferir as principais iniciativas realizadas pelo programa.</p>
                     <br>
                     <p> A equipe do CEDiC é composta por discentes voluntários e bolsistas, oriundos de variados cursos da UNESP; sendo atualmente coordenados pelo docente Dr. Kleper Rocha. Este grupo é subdividido em times menores, cada qual responsável pela executação de uma vertente do programa. Para saber mais sobre nossa história, acesse a aba "<a href="#sobre">Sobre</a>"!</p>
+                </div>
+
+                <img id="fachadaCedic" src="imagens/fachadaCedic.jpg" alt="Imagem da fachada do prédio do CEDiC">
+                <!--Colocar uma foto da fachada do CEDiC-->
+            </div>
+        </section>
+
+        <section class="secao" id="secaoProjetos">
+            <div id="divProjetos">
+                <h3>Projetos de Extensão</h3>
+
+                <div id="divCarrosselProjetos">
+                    <button class="setaCarrossel anterior" onclick="moveSlide(-1)">&#10094;</button>
+                    <div id="janelaCarrossel">
+                        <div id="listaCardsCarrossel">
+                            <div class="cardCarrossel active" onclick="showProject(0)">
+                                <img src="imagens/favicon.png" alt="Projeto 1">
+                                <h4>Impressão 3D</h4>
+                            </div>
+                            <div class="cardCarrossel" onclick="showProject(1)">
+                                <img src="imagens/favicon.png" alt="Projeto 2">
+                                <h4>Observatório</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="setaCarrossel proximo" onclick="moveSlide(1)">&#10095;</button>
+                </div>
+
+                <div id="divCarrosselDetalhes">
+                    <div class="divDetalhes active" id="projeto-0">
+                        <div class="divSliderFotos">
+                            <img src="imagens/fachadaCedic.jpg" class="fotoSlider active">
+                            <img src="imagens/bannerQuimica.jpg" class="fotoSlider">
+                        </div>
+                        <div class="textoDetalhes">
+                            <p>O projeto de Impressão 3D capacita alunos e a comunidade na fabricação digital, transformando modelos virtuais em objetos físicos para o ensino de ciências.</p>
+                        </div>
+                    </div>
+
+                    <div class="divDetalhes" id="projeto-1">
+                        <div class="divSliderFotos">
+                            <img src="imagens/carboidratos.jpeg" class="fotoSlider active">
+                            <img src="imagens/logoCEDIC.png" class="fotoSlider">
+                        </div>
+                        <div class="textoDetalhes">
+                            <p>O Observatório Didático de Astronomia oferece sessões de observação do céu, palestras e oficinas para escolas de toda a região de Bauru.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="secao" id="secaoIniciativas">
-            <div id="espacoIniciativas">
-                <!--Aqui eu quero fazer um carrossel com uma imagem que simbolize o projeto e abaixo dela um texto que resuma a iniciativa-->
-                <p> Confira estas e outras ações com mais detalhes na aba "<a href="#sobre">Projetos</a>".</p>
-            </div>
-        </section>
-
         <section class="secao" id="secaoEspacoFisico">
-            <div id="espacoFisico">
+            <div id="divConteudo">
                 <img id="plantaBaixaCedic" src="imagens/plantaBaixaCedic.jpg" alt="Imagem da planta baixa do CEDiC">
 
-                <div id="textoEspacoFisico">
-                    <h3>Conheça cada detalhe da infraestrutura do CEDiC:</h3>
+                <div class="textoDivConteudo">
+                    <h3>Nossa infraestrutura</h3>
                     <p>    O Centro de Extensão e Divulgação Científica (CEDiC) é um espaço da UNESP - Bauru de 391 m², dedicado às atividades de divulgação científica da universidade. Originalmente, o local abrigava os escritórios dos pesquisadores do IPMet, mas foi readaptado para atender às novas necessidades. As instalações incluem várias salas que são utilizadas para atividades científicas, uma cozinha, um auditório e banheiros masculinos e femininos, conforme a planta baixa ao lado. O CEDiC é dividido em áreas específicas, como os Espaços Secos e os Espaços Molhados (ambos com 51,75 m²), além de duas salas de exposição, um anfiteatro e três salas de apoio, sendo adaptado para pessoas com mobilidade reduzida.</p>
                     <br>
                     <p> O CEDiC também incorpora o Observatório Didático de Astronomia da UNESP, que está em funcionamento desde 2009. Este observatório dispõe de uma sala com 18 computadores, duas salas de aula com capacidade para 30 pessoas cada, e outras facilidades como guarita de vigilância, acesso público facilitado, estacionamento para pessoas com necessidades especiais, rampa de acesso, banheiros e bebedouro. Essas características fazem do CEDiC um local ideal para a realização de diversas atividades científicas e educativas, proporcionando um ambiente acessível e bem equipado para todos os visitantes.</p>
@@ -136,15 +175,112 @@
             </div>
         </section>
 
-        <section class="chamamento" id="secaoChamamento">
-            <div id="espacoIniciativas">
-                <p><!--Escrever uma frase no estilo do site de aniversário da Ráyna convidando o usuário a agendar uma visita para o grupo dele (escola, associação, etc.) e outra linha incentivando-o a entrar em contato caso ele tenha gostado de alguma iniciativa apresentada anteriormente.--></p>
+        <section class="secao" id="fraseFinal">
+            <div id="textoConvite">
+                <p>Quer aprender ciências, transformar sua comunidade e desvendar o mundo?</p>
+                <p><strong>Visite o CEDiC!</strong></p>
+                
+                <div class="divBotaoFinal">
+                    <button class="botoes"><a href="">Agende sua visita</a></button>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Equipe de Professores. Todos os direitos reservados.</p>
-    </footer> <!--Quando for fazer o footer, acho que seria interessante colocar como background color o branco, com os intens em cinza-->
+    <footer class="rodape">
+        <div class="divRodape">
+            <div class="colunaDivRodape">
+                <img src="imagens/logoCEDICMestra.png" alt="Logo expandida do CEDiC" class="logoRodape">
+                <p class="descricao-cedic">Centro de Extensão e Divulgação Científica da Faculdade de Ciências - UNESP</p>
+            </div>
+
+            <div class="colunaDivRodape">
+                <h3>Endereço</h3>
+                <p>IPMet - FC/UNESP</p>
+                <p>Estrada Municipal José Sandrin, s/n</p>
+                <p>Chácaras Bauruenses - Bauru/SP</p>
+                <p style="margin-bottom: 20px;">CEP 17048-699</p>
+                
+                <h3>Contato</h3>
+                <p>Tel: (14) XXXX-XXXX</p>
+                <p>E-mail: <a href="mailto:aaaaaaaaa@unesp.br" class="linkEmail">aaaaaaaaa@unesp.br</a></p>
+            </div>
+
+            <div class="colunaDivRodape">
+                <h3>Links Rápidos</h3>
+                <ul class="linksRodape">
+                    <li>
+                        <a href="https://www.instagram.com" target="_blank">
+                            <img src="imagens/Instagram_icon.png" alt="Instagram" class="iconeLink"> 
+                            <span>Instagram</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.fc.unesp.br/#!/cedic" target="_blank">
+                            <img src="imagens/logoUNESPEstado.png" alt="Portal UNESP" class="iconeLink"> 
+                            <span>Portal FC UNESP</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="colunaDivRodape">
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="botaoVoltarTopo">
+                    Voltar ao topo ↑
+                </button>
+            </div>
+        </div>
+
+        <div class="divDireitosAutorais">
+            <p>Desenvolvido por <a href="https://github.com/RomaniniGabriel" target="_blank" class="linkEmail">Gabriel Romanini Alves Monteiro</a>. Todos os direitos reservados.</p>
+            <p>&copy; 2024 - <span id="anoAtual"></span></p>
+        </div>
+    </footer>
+
+    <script>
+        // Atualiza o ano automaticamente
+        document.getElementById('anoAtual').textContent = new Date().getFullYear();
+    </script>
+    
+    <script>
+    // Trocar de Projeto
+    function showProject(index) {
+        // Remove 'active' de todos os cards e conteúdos
+        document.querySelectorAll('.cardCarrossel').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.divDetalhes').forEach(el => el.classList.remove('active'));
+
+        // Adiciona ao selecionado
+        document.querySelectorAll('.cardCarrossel')[index].classList.add('active');
+        document.getElementById(`projeto-${index}`).classList.add('active');
+    }
+
+    // Slider Automático Interno
+    function startInnerSliders() {
+        const projects = document.querySelectorAll('.divSliderFotos');
+        
+        projects.forEach(project => {
+            let photos = project.querySelectorAll('.fotoSlider');
+            let currentPhoto = 0;
+
+            if(photos.length > 0) {
+                setInterval(() => {
+                    photos[currentPhoto].classList.remove('active');
+                    currentPhoto = (currentPhoto + 1) % photos.length;
+                    photos[currentPhoto].classList.add('active');
+                }, 5000); // Muda a foto a cada 5 segundos
+            }
+        });
+    }
+
+    // Inicializa o slider interno
+    startInnerSliders();
+
+    // Lógica básica para as setas do carrossel superior (scroll horizontal)
+    function moveSlide(direction) {
+        const container = document.getElementById('janelaCarrossel');
+        const scrollAmount = 200;
+        container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+    </script>
 </body>
 </html>

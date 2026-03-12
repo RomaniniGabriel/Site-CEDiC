@@ -1,0 +1,102 @@
+/* Ajuste para o Main não ficar sob o cabeçalho fixo */
+.layout-sobre {
+    display: flex;
+    margin-top: 98px; /* Altura do seu header */
+    min-height: calc(100vh - 98px);
+    position: relative;
+    align-items: flex-start;
+}
+
+/* Sidebar Fixa */
+.sidebar-sobre {
+    width: 35%;
+    height: calc(100vh - 98px);
+    position: sticky;
+    top: 98px;
+    left: 0;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('imagens/placaCedicVertical.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: right;
+    padding: 40px;
+}
+
+/* Conteúdo que rola */
+.conteudo-principal {
+    width: 65%;
+    padding: 60px;
+}
+
+.secao-texto {
+    margin-bottom: 50px;
+}
+
+.secao-texto strong {
+    color: rgb(0, 132, 74);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.secao-texto h2 {
+   border-bottom: 2px solid #eee;
+}
+
+/* Estilo da Linha Cronológica */
+.timeline-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.timeline-item {
+    flex: 1;
+    text-align: center;
+}
+
+.timeline-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    filter: grayscale(100%);
+    transition: 0.3s;
+}
+
+.timeline-item img:hover {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+.timeline-item span {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* Responsividade para Celulares */
+@media (max-width: 1040px) {
+    .layout-sobre {
+        flex-direction: column;
+    }
+    .sidebar-sobre {
+        position: relative;
+        top: 0;
+        width: 100%;
+        height: auto;
+        text-align: center;
+    }
+    .conteudo-principal {
+        margin-left: 0;
+        width: 100%;
+        padding: 30px;
+    }
+    .timeline-container {
+        flex-direction: column;
+    }
+}

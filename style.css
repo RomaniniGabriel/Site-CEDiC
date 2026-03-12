@@ -1,6 +1,8 @@
+/*----------------------- Pré Configurações ---------------------------*/
+
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
 
-:root{
+:root{ /*Definindo as cores padrões para o texto, o bg da página e o bg do cabeçalho*/
     --text: black;
     --bg: #fff;
     --bgHeader: white;
@@ -12,27 +14,28 @@
     box-sizing: border-box;
     padding: 0;
     text-decoration: none; 
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; /*Talvez eu mude daqui para permitir outras fontes ao longo da página e não haver conflito*/
 }
 
 html{
-    scroll-behavior: smooth; 
+    scroll-behavior: smooth; /*Para qualquer redirecionamento dentro da mesma página, a página se moverá com suavidade. Isso ocorre com os botões do index*/
 }
 
 body{
     font-size: 100%;
     background-color: var(--bg);
+    color: var(--text);
 }
 
-#logo2Black{
+#logo2Black{ /*logo da unesp em versão escura fica desativada por padrão (modo claro)*/
     display: none;
 }
 
-#logo2{
+#logo2{ /*logo normal da unesp fica visível no modo padrão (modo claro)*/
     display: block;
 }
 
-@media(prefers-color-scheme: dark) {
+@media(prefers-color-scheme: dark) { /*inverte as cores do texto, bg da página, bg do cabeçalho e a logo da unesp quando o modo escuro do computador é ativado*/
     body{
         --bg:#181818;
         --text:#fff;
@@ -47,8 +50,9 @@ body{
         display: block;
     }
 }
+/*----------------------- Pré Configurações ---------------------------*/
 
-/*---------------Cabeçalho---------------------------*/
+/*------------------------ Cabeçalho ---------------------------*/
 
 .cabecalho{
     display: flex;
@@ -59,11 +63,13 @@ body{
     padding: 20px;
     text-transform: uppercase; /*Independente do que foi inserido no html, o texto todo ficará em maiúsculo*/
     font-size: 15px;
-    position: fixed; /*How to shrink a header on scroll?*/
+    position: fixed; /*"How to shrink a header on scroll?". Cabeçalho fixo ao longo de toda a página*/
     top: 0;
     width: 100%;
     background-color: var(--bgHeader);
     transition: 0.2s;
+    border-bottom: 3px solid rgb(0, 132, 74);
+    z-index: 9999; /*Dentre os itens fixados, o cabeçalho fica na layer mais alta (no primeiro plano da tela)*/
 }
 
 .logos{
@@ -121,12 +127,13 @@ li{
     width: 120px;
     margin: 4px;
     list-style-type: none; /*Bolinha que aparce junto das listas por padrão nas listas é excluído*/
+
 }
 
-li a{
+.menu li a{
     display: flex; /*O link ocupa o mesmo espaço do li*/
     text-decoration: none; /*Remove o underline do link*/
-
+    box-shadow: 4px 4px 4px #212121;
     border-radius: 4px;
     padding: 4px;
     background-color: rgb(0, 132, 74); /*por padrão, o texto ficará com cor verde */
@@ -139,11 +146,12 @@ li a{
     transition-duration: 200ms;
 }
 
-li a:hover{ /*hover é quando o cursor passa por cima do elemento*/
+.menu li a:hover{ /*hover é quando o cursor passa por cima do elemento*/
     background-color: white; /*quando o cursor passa por cima da caixa, a caixa fica branca*/
     color: rgb(0, 132, 74); /*e o texto fica verde*/
     border: 1px solid rgb(0, 132, 74);
     transform: scale(0.90);
+    box-shadow: 4px 4px 4px #212121;
 }
 
 li a:active{ /*active é quando o elemento é clicado*/
@@ -183,18 +191,23 @@ nav li:hover > ul{
     }
 }
 
-/*---------------Cabeçalho---------------------------*/
+/*------------------------ Cabeçalho ---------------------------*/
 
-/*------------------Main---------------------------*/
+/*--------------------------- Main ---------------------------*/
 
-.principal{
+.principal{ /*ajusta o corpo - parte principal - do site*/
     display: flex;
     flex-wrap: wrap; /*Responsividade para o corpo*/
     flex-direction: column;
-    padding-top: 105px;
+    padding-top: 98px;
 }
 
-#secaoChamamento{
+.secao{ /*todas as seções do site ocupam a largura inteira da tela*/
+    width: 100%;
+}
+
+/*Primeira seção (foto portaria 1): início*/
+#secaoChamamento{ /*Propriedades gerais da seção*/
     background-image: url(imagens/banner.jpg);
     background-repeat: no-repeat; /*a imagem não repete, por mais que haja mais conteúdo do que o seu tamanho possa cobrir*/
     background-attachment: local; /*Conforme há a rolagem, a imagem fica estática. Ou seja, não acompanha o conteúdo*/
@@ -203,7 +216,7 @@ nav li:hover > ul{
     background-position: center;
 }
 
-#comandos{
+#comandos{ /*organização da div que contém o texto e os botões sobre a imagem da portaria*/
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -215,13 +228,15 @@ nav li:hover > ul{
     height: 100%;
 }
 
-.botoes{
+/*Não há personalizações próprias para o texto sobre a imagem*/
+
+.botoes{ /*organização da div que contém os botões sobre a imagem da portaria*/
     width: 200px;
     border-style: none;
     background-color: transparent;
 }
 
-#botoes{
+#botoes{ /*configuração dos botões em si (<button></>)*/
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -231,7 +246,7 @@ nav li:hover > ul{
     gap: 20px;
 }
 
-.botoes a{
+.botoes a{ /*links dos botões*/
     display: flex; /*O link ocupa o mesmo espaço do li*/
     text-decoration: none; /*Remove o underline do link*/
     color: white;
@@ -248,25 +263,31 @@ nav li:hover > ul{
     transition-duration: 200ms;
 }
 
-.botoes a:hover{ /*hover é quando o cursor passa por cima do elemento*/
+.botoes a:hover{ /*quando o cursor passa sobre os botões*/
     background-color: white; /*quando o cursor passa por cima da caixa, a caixa fica branca*/
     color: rgb(0, 132, 74); /*e o texto fica verde*/
     border: 1px solid rgb(0, 132, 74);
     transform: scale(0.90);
 }
 
-.botoes a:active{ /*active é quando o elemento é clicado*/
+.botoes a:active{ /*quando os botões são clicados*/
     transform: scale(0.95); /*scale - diminui o elemento para dar uma impressão de clique*/
 }
+/*Primeira seção: fim*/
 
-#secaoMateriasDosExperimentos{
-    background-color: var(--bg);
-    color: var(--text);
+/*Segunda seção (áreas para experimentos): início*/
+#secaoMateriasDosExperimentos{ /*edição da seção de modo geral*/
     padding-top: 40px;
     padding-bottom: 40px;
+    scroll-margin-top: 150px; /*isso é o que impede o cabeçalho de tampar a seção quando o botão no cabeçalho é clicado*/
 }
 
-#materias{
+#textoMaterias{ /*edição para o título h3 da seção*/
+    font-size: 25px;
+    text-align: center;
+}
+
+#materias{ /*edição da div que contém os cards com as áreas para experimentos*/
     width: 100%;
     height: 30%;
     display: flex;
@@ -275,15 +296,9 @@ nav li:hover > ul{
     align-items: center; /*Alinha os itens entre o topo e o rodapé. Centraliza verticalmente*/
     justify-content: space-around; /*Alinha os itens horizontalmente*/
     padding: 30px;
-
 }
 
-#textoMaterias{
-    font-size: 25px;
-    text-align: center;
-}
-
-.card{
+.card{ /*edição dos cards das áreas em si*/
     width: 180px;
     height: 100%;
     display: flex;
@@ -297,79 +312,444 @@ nav li:hover > ul{
     box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.3);
 }
 
-.imgMateria{
+.imgMateria{ /*configura os ícones de dentro dos cards*/
     width: 80px;
 }
 
-h4{
+h4{ /*nome/título da área dos cards*/
     font-size: larger;
     color: white;
 }
 
-#cardFisica{
-    background-color: rgb(255, 116, 47)
-}
+    #cardFisica{
+        background-color: rgb(255, 116, 47)
+    }
 
-#cardBiologia{
-    background-color: rgb(52, 205, 72);
-}
+    #cardBiologia{
+        background-color: rgb(52, 205, 72);
+    }
 
-#cardAstronomia{
-    background-color: rgb(37, 37, 37);
-}
+    #cardAstronomia{
+        background-color: rgb(37, 37, 37);
+    }
 
-#cardMatematica{
-    background-color: lightskyblue;
-}
+    #cardMatematica{
+        background-color: lightskyblue;
+    }
 
-#cardPedagogia{
-    background-color: rgb(227, 0, 227);
-}
+    #cardPedagogia{
+        background-color: rgb(227, 0, 227);
+    }
 
-#cardQuimica{
-    background-color: rgb(255, 130, 134);
-}
+    #cardQuimica{
+        background-color: rgb(255, 130, 134);
+    }
 
-.card:hover{ /*quando o cursor passa por cima do elemento, ele diminui*/
+.card:hover{ /*quando o cursor passa por cima do card, ele diminui*/
     transform: scale(1.1);
 }
 
-.card a:active{ /*active é quando o elemento é clicado*/
+.card a:active{ /*quando o card é clicado*/
     transform: scale(0.95); /*scale - diminui o elemento para dar uma impressão de clique*/
 }
+/*Segunda seção: fim*/
 
-#espacoFisico{
+/*Terceira seção (o que é o cedic): início*/
+/*não há edição da seção pois ela não é acessível através da navegação de botão e não há necessidade de haver padding.*/
+#divConteudo { /*edição da div que contém o texto e a imagem da seção*/
     width: 100%;
-    height: 50%;
+    min-height: 50vh; 
     background-color: rgb(0, 132, 74);
     color: rgb(235, 235, 235);
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-evenly;
-    padding: 50px 0px 50px 0px;
+    align-items: center; /* ISSO alinha a imagem e o texto perfeitamente pelo centro vertical */
+    padding: 50px 0px;
 }
 
-#plantaBaixaCedic{
-    width: 25%;
-    border-radius: 10px;
-}
-
-#textoEspacoFisico{
+.textoDivConteudo { /*edição da div que contém a parte textual da seção*/
     border-top: 1px solid white;
     border-bottom: 1px solid white;
     width: 40%;
     text-align: justify;
-
     font-size: large;
-    align-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 
-#textoEspacoFisico h3{
+.textoDivConteudo h3 { /*Edição do título da div textual*/
     padding: 6px 0px 24px 0px;
     text-align: center;
 }
 
-#secaoMateriasDosExperimentos{
-    scroll-margin-top: 150px;
+.textoDivConteudo h3, 
+.textoDivConteudo p { /* edição do título h3 e dos parágrafos da div textual. Remoção das margens padrão que causam gaps */
+    margin: 0; 
 }
+
+#fachadaCedic{ /*edição da imagem contida na divConteudo*/
+    display: block;
+    height: auto; /* Mantém a proporção */
+    align-self: center;
+    border-radius: 10px;
+}
+/*Terceira seção: fim*/
+
+/*Quarta seção (projetos de extensão): início*/
+#secaoProjetos{ /*edição da seção de modo geral*/
+    padding-top: 40px;
+    padding-bottom: 40px;
+    scroll-margin-top: 150px; /*isso é o que impede o cabeçalho de tampar a seção quando o botão no cabeçalho é clicado*/
+}
+
+/*a divProjetos contém o título h3 da seção, o carrossel primário (projetos) e o carrossel secundário (detalhes de cada projeto). Porém, graças ao modo como a seção foi pensada (vertical), as propriedades default's da div + propriedades declaradas para o body já acomodam a edição desejada para essa div*/
+
+#divProjetos h3{ /*edição título da seção*/
+    text-align: center;
+}
+
+/*Carrossel Primário: início*/
+    #divCarrosselProjetos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Controla a distância exata entre a seta e o card */
+        width: 100%;
+    }
+
+    /*--- Customização das Setas ---*/
+        .setaCarrossel {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            color: rgba(128, 128, 128, 0.5); 
+        }
+
+        .setaCarrossel:hover {
+        /* Cor do texto definida no root ao passar o mouse */
+        color: var(--text); 
+        opacity: 1;
+        }
+
+    #janelaCarrossel { /*edita a "faixa" horizontal de projetos do carrossel primário*/
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        /* Define o limite de largura para os cards. */
+        /* Se existirem muitos cards, eles ficarão "presos" nesse espaço e as setas não vão se afastar */
+        max-width: 850px; 
+    }
+    
+    #listaCardsCarrossel { /*edita a lista de cards que vai dentro da "faixa" horizontal*/
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding: 15px;
+    }
+
+    .cardCarrossel { /*edita o card do carrossel primário*/
+        width: 250px;
+        background-color: var(--bgHeader);
+        border-radius: 12px;
+        padding: 15px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        opacity: 0.7;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .cardCarrossel img { /*edita a imagem que vai no card do carrossel primário*/
+        width: 100%;
+        object-fit: contain;
+        margin-bottom: 12px;
+    }
+
+    .cardCarrossel h4 { /*edita o título do card do carrossel primário*/
+        font-size: 14px;
+        color: var(--text);
+        border-top: 1px solid #ccc; 
+        padding-top: 10px;
+        margin-top: 5px;
+    }
+
+    .cardCarrossel:hover, .cardCarrossel.active {/*Efeito de levante do card quando selecionado ou quando o cursor está sobre ele*/
+        opacity: 1;
+        transform: translateY(-5px); 
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .cardCarrossel.active {/*coloca borda no card quando ele está selecionado*/
+        border: 1.5px solid rgb(0, 132, 74);
+    }
+/*Carrossel Primário: fim*/
+
+/*Carrossel secundário: início*/
+
+    #divCarrosselDetalhes {/*edita a div que contém todas explicações de todos os cards*/
+        width: 90%;
+        max-width: 900px;
+        height: 300px; 
+        margin: 30px auto;
+        background-color: var(--bgHeader); /* Mantém consistência com o tema */
+        display: flex; /* Para alinhar o conteúdo interno */
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .divDetalhes { /*edita a div de explicação que contém o slider de fotos e o texto de explicação*/
+        display: none;
+        width: 100%;
+    }
+
+    .divDetalhes.active {/*Dá o alinhamento lado a lado do slider de fotos com o texto da explicação quando a div de explicação é acionada*/
+        display: flex; 
+    }
+
+    .divSliderFotos { /*edita o slider de fotos da div de explicação*/
+        flex: 1;
+        position: relative;
+        background-color: #000; /* Fundo preto para imagens que não preenchem tudo */
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    .fotoSlider { /*edita a imagem/foto que via dentro do slider da div de explicação*/
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /*A imagem preenche o espaço mantendo sua proporção original, sem distorção*/
+        opacity: 0;
+        transition: opacity 0.8s ease;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    .fotoSlider.active { 
+        opacity: 1;
+    }
+
+    .textoDetalhes { /*edita o texto explicativo que vai dentro da div de explicação */
+        flex: 1; /* Ocupa a outra metade da div de explicação*/
+        padding: 10px 30px 10px 30px;
+        overflow-y: auto; /* Caso o parágrafo seja longo, gera scroll interno */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: justify;
+    }
+/*Carrossel secundário: fim*/
+/*Quarta seção: fim*/
+
+/*Quinta seção (espaço físico): início*/
+/*Como a seção usa a mesma estilização da seção 3 (o que é), a única coisa que precisa ser editada é a imagem*/
+#plantaBaixaCedic{ /*edição da imagem da seção*/
+    width: 25%;
+}
+/*Quinta seção: fim*/
+
+/*Sexta seção (frase final): início*/
+#fraseFinal { /*edição da seção. As propriedades para a div que contém a frase e o botão não são declaradas pois o design dela corresponde as propriedades padrão*/
+    padding: 0; /* Sem o padding para o conteúdo ser centralizado via Flexbox */
+    text-align: center;
+    background-image: url(imagens/bannerImagens.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    /* 1. Faz a imagem ocupar 100% da largura e ajustar a altura proporcionalmente */
+    background-size: contain; 
+    width: 100%;
+
+    /* 2. Mantém a proporção da imagem (Aspect Ratio) */
+    /* A imagem enviada tem aprox. 1024x576, o que resulta na proporção 16/9 */
+    aspect-ratio: 16 / 9;
+
+    /* 3. Centraliza o conteúdo (texto e botão) no meio da seção */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#textoConvite {
+    /* Garante que o texto não escape da área preta central */
+    max-width: 60%;
+}
+
+@media (max-width: 768px) {
+    #fraseFinal {
+        aspect-ratio: auto; /* Permite que a seção cresça se o texto for grande */
+        min-height: 400px;
+        background-size: cover; /* Preenche melhor o fundo no celular */
+    }
+}
+
+#textoConvite p { /*edição da frase final dentro da div da seção*/
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+#textoConvite p strong { /*edição do negrito na frase final dentro da div da seção*/
+    font-size: 2rem;
+    color: rgb(0, 132, 74); /* Verde padrão do site */
+}
+
+.divBotaoFinal { /*edição da div que contém o botão, e que está dentro da div principal da seção*/
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.divBotaoFinal .botoes { /*o botão da seção é o mesmo da primeira seção. Logo, utiliza a mesma estilização. Porém, para garantir a largura correta desse botão nessa seção, é declarada a propriedade abaixo, que sobrepõe o valor inicialmente declarado no início desse código*/
+    width: 250px;
+}
+
+/*--------------------------- Main ---------------------------*/
+
+/*-------------------------- Rodapé ---------------------------*/
+
+.rodape {
+    background-color: #004d2c;
+    color: #ffffff;
+    padding: 60px 20px 20px;
+    font-size: 0.95rem;
+}
+
+.divRodape {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 40px;
+    justify-items: center;
+}
+
+.logoRodape {
+    max-width: 180px;
+    margin-bottom: 20px;
+}
+
+.colunaDivRodape h3 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #4ade80; /*Para o título da coluna, um verde mais claro para dar destaque */
+}
+
+.descricao-cedic {
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+.linksRodape {
+    list-style: none;
+    padding: 0;
+}
+
+.linksRodape li {
+    margin-bottom: 10px;
+    width: auto;
+}
+
+.linksRodape a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.linksRodape a:hover {
+    color: #4ade80;
+    text-decoration: underline;
+}
+
+.botaoVoltarTopo {
+    background: transparent;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.botaoVoltarTopo:hover {
+    background: #ffffff;
+    color: #004d2c;
+}
+
+.divDireitosAutorais {
+    text-align: center;
+    padding-top: 30px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .divRodape {
+        text-align: center;
+        grid-template-columns: 1fr;
+    }
+    
+    .logoRodape {
+        margin: 0 auto 20px;
+    }
+}
+
+.linkEmail{
+    color: white
+}
+
+/* Efeito ao passar o mouse*/
+.linkEmail:hover {
+    text-decoration: underline; /* Adiciona o sublinhado */
+}
+
+/*--- Ajustes na Coluna Links Rápidos ---*/
+
+.linksRodape {
+    list-style: none;
+    padding: 0;
+}
+
+.linksRodape li {
+    margin-bottom: 15px; /* Espaçamento entre os links */
+}
+
+.linksRodape a {
+    display: flex;
+    align-items: center; /* Alinha ícone e texto verticalmente ao centro */
+    gap: 12px;           /* Espaço entre o ícone e o texto */
+    text-decoration: none;
+    color: #ffffff;
+    transition: transform 0.2s ease; /* Transição suave para o efeito de diminuir */
+    width: fit-content;  /* Garante que o hover só funcione sobre o conteúdo */
+}
+
+.linksRodape a:hover {
+    transform: scale(0.96); /* Diminui levemente ao passar o mouse */
+    color: #4ade80;         /* Opcional: muda a cor do texto no hover */
+}
+
+.iconeLink {
+    width: 24px;  /* Tamanho reduzido e fixo para os ícones */
+    height: 24px; /* Mantém a proporção quadrada */
+    object-fit: contain;
+}
+
+.linksRodape span {
+    font-size: 0.95rem;
+}
+
+/*-------------------------- Rodapé ---------------------------*/
