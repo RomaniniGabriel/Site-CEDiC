@@ -1,0 +1,11 @@
+.banner{
+    background-image: url(../../imagens/bannerQuimica.jpg);
+    background-repeat: no-repeat; /*a imagem não repete, por mais que haja mais conteúdo do que o seu tamanho possa cobrir*/
+    background-attachment: local; /*Conforme há a rolagem, a imagem fica estática. Ou seja, não acompanha o conteúdo*/
+    background-size: cover; /*a imagem cobrirá todo o viewport/tela (mas somente uma vez)*/
+    height: 225px;
+    width: 100%;
+    background-position: center;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
