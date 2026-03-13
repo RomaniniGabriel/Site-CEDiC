@@ -206,163 +206,151 @@
     </footer>
 
     <script>
-        // Atualiza o ano automaticamente
-        document.getElementById('anoAtual').textContent = new Date().getFullYear();
-    </script>
-    
-    <script>
+    // 1. Configurações Iniciais
     const URL_PLANILHA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=1482095598&output=csv';
+    let intervalosSliders = [];
 
-// Variável global para controlar os intervalos dos sliders internos de fotos
-let intervalosSliders = [];
+    // 2. Atualização automática do ano no rodapé
+    const elementoAno = document.getElementById('anoAtual');
+    if (elementoAno) elementoAno.textContent = new Date().getFullYear();
 
-async function carregarProjetos() {
-    try {
-        const resposta = await fetch(URL_PLANILHA);
-        if (!resposta.ok) throw new Error("Não foi possível acessar a planilha");
-        
-        const dadosTexto = await resposta.text();
-        
-        // Converte o CSV tratando vírgulas dentro de aspas (comum em descrições longas)
-        const linhas = dadosTexto.split(/\r?\n/).filter(linha => linha.trim() !== "").map(linha => {
-            return linha.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-        });
-        
-        // Mapeia o cabeçalho para encontrar os índices das colunas dinamicamente
-        const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
-        const dadosProjetos = linhas.slice(1);
-        
-        const idxStatus = cabecalho.indexOf('status');
-        const idxTitulo = cabecalho.indexOf('titulo');
-        const idxImgPrincipal = cabecalho.indexOf('imagem_principal');
-        const idxImgsSec = cabecalho.indexOf('imagens_secundarias');
-        const idxDesc = cabecalho.indexOf('descricao');
-        const idxSituacao = cabecalho.indexOf('situacao');
-        const idxPublico = cabecalho.indexOf('publico_alvo');
-
-        const listaCards = document.getElementById('listaCardsCarrossel');
-        const listaDetalhes = document.getElementById('divCarrosselDetalhes');
-        
-        // Limpa os conteúdos de mockup/carregamento
-        listaCards.innerHTML = '';
-        listaDetalhes.innerHTML = '';
-
-        let indiceAtivo = 0;
-
-        dadosProjetos.forEach((coluna) => {
-            const limpar = (t) => t ? t.replace(/^"|"$/g, '').trim() : "";
+    // 3. Função Principal: Carregar dados da Planilha
+    async function carregarProjetos() {
+        try {
+            const resposta = await fetch(URL_PLANILHA);
+            if (!resposta.ok) throw new Error("Não foi possível acessar a planilha");
             
-            const status = limpar(coluna[idxStatus]).toLowerCase();
+            const dadosTexto = await resposta.text();
             
-            if (status === 'ativo') {
-                const titulo = limpar(coluna[idxTitulo]);
-                const imgPrincipal = limpar(coluna[idxImgPrincipal]);
-                const imgsSecundarias = limpar(coluna[idxImgsSec]).split(';');
-                const descricao = limpar(coluna[idxDesc]);
-                const situacao = limpar(coluna[idxSituacao]);
-                const publico = limpar(coluna[idxPublico]);
+            // Converte o CSV tratando vírgulas dentro de aspas
+            const linhas = dadosTexto.split(/\r?\n/).filter(linha => linha.trim() !== "").map(linha => {
+                return linha.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            });
+            
+            // Mapeia o cabeçalho para encontrar as colunas dinamicamente
+            const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
+            const dadosProjetos = linhas.slice(1);
+            
+            const idxStatus = cabecalho.indexOf('status');
+            const idxTitulo = cabecalho.indexOf('titulo');
+            const idxImgPrincipal = cabecalho.indexOf('imagem_principal');
+            const idxImgsSec = cabecalho.indexOf('imagens_secundarias');
+            const idxDesc = cabecalho.indexOf('descricao');
+            const idxSituacao = cabecalho.indexOf('situacao');
+            const idxPublico = cabecalho.indexOf('publico_alvo');
 
-                // 1. Criar Card Superior do Carrossel
-                const card = document.createElement('div');
-                card.className = `cardCarrossel ${indiceAtivo === 0 ? 'active' : ''}`;
-                card.onclick = () => showProject(indiceAtivo);
-                card.innerHTML = `
-                    <img src="${imgPrincipal || 'imagens/favicon.png'}" alt="${titulo}">
-                    <h4>${titulo}</h4>
-                `;
-                listaCards.appendChild(card);
+            const listaCards = document.getElementById('listaCardsCarrossel');
+            const listaDetalhes = document.getElementById('divCarrosselDetalhes');
+            
+            listaCards.innerHTML = '';
+            listaDetalhes.innerHTML = '';
 
-                // 2. Criar Seção de Detalhes do Projeto
-                const detalhe = document.createElement('div');
-                detalhe.className = `divDetalhes ${indiceAtivo === 0 ? 'active' : ''}`;
-                detalhe.id = `projeto-${indiceAtivo}`;
+            let indiceAtivo = 0;
+
+            dadosProjetos.forEach((coluna) => {
+                const limpar = (t) => t ? t.replace(/^"|"$/g, '').trim() : "";
+                const status = limpar(coluna[idxStatus]).toLowerCase();
                 
-                // Processa imagens secundárias para o slider interno
-                let fotosHtml = '';
-                imgsSecundarias.forEach((url, i) => {
-                    const urlLimpa = url.trim();
-                    if(urlLimpa !== "") {
-                        fotosHtml += `<img src="${urlLimpa}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
+                if (status === 'ativo') {
+                    const titulo = limpar(coluna[idxTitulo]);
+                    const imgPrincipal = limpar(coluna[idxImgPrincipal]);
+                    const imgsSecundarias = limpar(coluna[idxImgsSec]).split(';');
+                    const descricao = limpar(coluna[idxDesc]);
+                    const situacao = limpar(coluna[idxSituacao]);
+                    const publico = limpar(coluna[idxPublico]);
+
+                    // Criar Card Superior
+                    const card = document.createElement('div');
+                    card.className = `cardCarrossel ${indiceAtivo === 0 ? 'active' : ''}`;
+                    card.onclick = () => showProject(indiceAtivo);
+                    card.innerHTML = `
+                        <img src="${imgPrincipal || 'imagens/favicon.png'}" alt="${titulo}">
+                        <h4>${titulo}</h4>
+                    `;
+                    listaCards.appendChild(card);
+
+                    // Criar Detalhe do Projeto
+                    const detalhe = document.createElement('div');
+                    detalhe.className = `divDetalhes ${indiceAtivo === 0 ? 'active' : ''}`;
+                    detalhe.id = `projeto-${indiceAtivo}`;
+                    
+                    let fotosHtml = '';
+                    imgsSecundarias.forEach((url, i) => {
+                        const urlLimpa = url.trim();
+                        if(urlLimpa !== "") {
+                            fotosHtml += `<img src="${urlLimpa}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
+                        }
+                    });
+
+                    if (fotosHtml === "") {
+                        fotosHtml = `<img src="${imgPrincipal}" class="fotoSlider active">`;
                     }
-                });
 
-                // Se não houver fotos secundárias, usa a principal no detalhe
-                if (fotosHtml === "") {
-                    fotosHtml = `<img src="${imgPrincipal}" class="fotoSlider active">`;
+                    detalhe.innerHTML = `
+                        <div class="divSliderFotos">
+                            ${fotosHtml}
+                        </div>
+                        <div class="textoDetalhes">
+                            <p><strong>Descrição:</strong> ${descricao}</p>
+                            <p><strong>Situação:</strong> ${situacao}</p>
+                            <p><strong>Público-alvo:</strong> ${publico}</p>
+                        </div>
+                    `;
+                    listaDetalhes.appendChild(detalhe);
+                    indiceAtivo++;
                 }
+            });
 
-                detalhe.innerHTML = `
-                    <div class="divSliderFotos">
-                        ${fotosHtml}
-                    </div>
-                    <div class="textoDetalhes">
-                        <p><strong>Descrição:</strong> ${descricao}</p>
-                        <p><strong>Situação:</strong> ${situacao}</p>
-                        <p><strong>Público-alvo:</strong> ${publico}</p>
-                    </div>
-                `;
-                listaDetalhes.appendChild(detalhe);
-                indiceAtivo++;
+            if (indiceAtivo === 0) {
+                listaCards.innerHTML = '<p>Nenhum projeto ativo encontrado.</p>';
+            }
+
+            iniciarSlidersInternos();
+
+        } catch (erro) {
+            console.error("Erro:", erro);
+            document.getElementById('listaCardsCarrossel').innerHTML = '<p>Erro ao carregar projetos da planilha.</p>';
+        }
+    }
+
+    // 4. Funções de Controle de Interface
+    function showProject(index) {
+        const cards = document.querySelectorAll('.cardCarrossel');
+        const detalhes = document.querySelectorAll('.divDetalhes');
+
+        cards.forEach((c, i) => c.classList.toggle('active', i === index));
+        detalhes.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+
+    function iniciarSlidersInternos() {
+        intervalosSliders.forEach(clearInterval);
+        intervalosSliders = [];
+
+        const containers = document.querySelectorAll('.divSliderFotos');
+        containers.forEach(container => {
+            let fotos = container.querySelectorAll('.fotoSlider');
+            let fotoAtual = 0;
+            if(fotos.length > 1) {
+                const int = setInterval(() => {
+                    fotos[fotoAtual].classList.remove('active');
+                    fotoAtual = (fotoAtual + 1) % fotos.length;
+                    fotos[fotoAtual].classList.add('active');
+                }, 4000);
+                intervalosSliders.push(int);
             }
         });
-
-        // Se nenhum projeto foi carregado
-        if (indiceAtivo === 0) {
-            listaCards.innerHTML = '<p>Nenhum projeto ativo no momento.</p>';
-        }
-
-        // Inicia a animação automática das fotos nos detalhes
-        iniciarSlidersInternos();
-
-    } catch (erro) {
-        console.error("Erro ao carregar dados:", erro);
-        document.getElementById('listaCardsCarrossel').innerHTML = '<p>Erro ao carregar projetos.</p>';
     }
-}
 
-function showProject(index) {
-    const cards = document.querySelectorAll('.cardCarrossel');
-    const detalhes = document.querySelectorAll('.divDetalhes');
-
-    cards.forEach((c, i) => {
-        c.classList.toggle('active', i === index);
-    });
-    
-    detalhes.forEach((d, i) => {
-        d.classList.toggle('active', i === index);
-    });
-}
-
-function iniciarSlidersInternos() {
-    // Limpa intervalos de animação anteriores
-    intervalosSliders.forEach(clearInterval);
-    intervalosSliders = [];
-
-    const containers = document.querySelectorAll('.divSliderFotos');
-    
-    containers.forEach(container => {
-        let fotos = container.querySelectorAll('.fotoSlider');
-        let fotoAtual = 0;
-
-        if(fotos.length > 1) {
-            const int = setInterval(() => {
-                fotos[fotoAtual].classList.remove('active');
-                fotoAtual = (fotoAtual + 1) % fotos.length;
-                fotos[fotoAtual].classList.add('active');
-            }, 4000); // Troca a cada 4 segundos
-            intervalosSliders.push(int);
+    function moveSlide(direction) {
+        const container = document.getElementById('janelaCarrossel');
+        if (container) {
+            const scrollAmount = 250;
+            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
         }
-    });
-}
+    }
 
-function moveSlide(direction) {
-    const container = document.getElementById('janelaCarrossel');
-    const scrollAmount = 250;
-    container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-}
-
-// Inicializa a carga dos dados assim que o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', carregarProjetos);
-    </script>
+    document.addEventListener('DOMContentLoaded', carregarProjetos);
+</script>
+    
 </body>
 </html>
