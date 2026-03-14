@@ -213,134 +213,126 @@
     </footer>
 
    <script>
-        const URL_PLANILHA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=2135806036&output=csv';
-        let intervalosSliders = [];
-    
-        // Função de conversão do Drive
-        function converterLinkDrive(url) {
-            if (!url) return "";
-            let link = url.trim().replace(/^"|"$/g, '');
-            if (link.includes("drive.google.com")) {
-                const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
-                if (match && match[1]) {
-                    return `https://lh3.googleusercontent.com/d/${match[1]}`;
-                }
+    const URL_PLANILHA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=2135806036&output=csv';
+    let intervalosSliders = [];
+
+    // Ano automático
+    const elementoAno = document.getElementById('anoAtual');
+    if (elementoAno) elementoAno.textContent = new Date().getFullYear();
+
+    function converterLinkDrive(url) {
+        if (!url) return "";
+        let link = url.trim().replace(/^"|"$/g, '');
+        if (link.includes("drive.google.com")) {
+            const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
+            if (match && match[1]) {
+                return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
             }
-            return link;
         }
-    
-        async function carregarProjetos() {
-            try {
-                const resposta = await fetch(URL_PLANILHA);
-                const dadosTexto = await resposta.text();
-                const linhas = dadosTexto.split(/\r?\n/).filter(l => l.trim() !== "").map(l => l.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
-                
-                const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
-                const dadosProjetos = linhas.slice(1);
-                
-                // Indices das colunas
-                const idxStatus = cabecalho.indexOf('status');
-                const idxTitulo = cabecalho.indexOf('titulo');
-                const idxImgPrincipal = cabecalho.indexOf('imagem_principal');
-                const idxImgsSec = cabecalho.indexOf('imagens_secundarias');
-                const idxDesc = cabecalho.indexOf('descricao');
-                const idxSituacao = cabecalho.indexOf('situacao');
-                const idxPublico = cabecalho.indexOf('publico_alvo');
-    
-                const listaCards = document.getElementById('listaCardsCarrossel');
-                const listaDetalhes = document.getElementById('divCarrosselDetalhes');
-                listaCards.innerHTML = '';
-                listaDetalhes.innerHTML = '';
-    
-                let indiceAtivo = 0;
-    
-                dadosProjetos.forEach((coluna) => {
-                    if (coluna[idxStatus] && coluna[idxStatus].toLowerCase().includes('ativo')) {
-                        const titulo = coluna[idxTitulo].replace(/^"|"$/g, '').trim();
-                        const imgPrincipal = converterLinkDrive(coluna[idxImgPrincipal]);
-                        
-                        // Card Superior
-                        const card = document.createElement('div');
-                        card.className = `cardCarrossel ${indiceAtivo === 0 ? 'active' : ''}`;
-                        // Atribui o clique diretamente no elemento criado
-                        const currentIdx = indiceAtivo;
-                        card.onclick = () => showProject(currentIdx);
-                        
-                        card.innerHTML = `
-                            <img src="${imgPrincipal || 'imagens/favicon.png'}" alt="${titulo}">
-                            <h4>${titulo}</h4>
-                        `;
-                        listaCards.appendChild(card);
-    
-                        // Div de Detalhes
-                        const detalhe = document.createElement('div');
-                        detalhe.className = `divDetalhes ${indiceAtivo === 0 ? 'active' : ''}`;
-                        
-                        const imgsSecRaw = coluna[idxImgsSec].replace(/^"|"$/g, '').trim();
-                        const linksSec = imgsSecRaw.split(';').map(l => converterLinkDrive(l)).filter(l => l !== "");
-    
-                        let fotosHtml = '';
-                        if (linksSec.length > 0) {
-                            linksSec.forEach((url, i) => {
-                                fotosHtml += `<img src="${url}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
-                            });
-                        } else {
-                            fotosHtml = `<img src="${imgPrincipal}" class="fotoSlider active">`;
-                        }
-    
-                        detalhe.innerHTML = `
-                            <div class="divSliderFotos">${fotosHtml}</div>
-                            <div class="textoDetalhes">
-                                <p><strong>Descrição:</strong> ${coluna[idxDesc].replace(/^"|"$/g, '').trim()}</p>
-                                <p><strong>Situação:</strong> ${coluna[idxSituacao].replace(/^"|"$/g, '').trim()}</p>
-                                <p><strong>Público-alvo:</strong> ${coluna[idxPublico].replace(/^"|"$/g, '').trim()}</p>
-                            </div>
-                        `;
-                        listaDetalhes.appendChild(detalhe);
-                        indiceAtivo++;
-                    }
-                });
-                iniciarSlidersInternos();
-            } catch (e) { console.error("Erro ao carregar projetos:", e); }
-        }
-    
-        function showProject(index) {
-            const cards = document.querySelectorAll('.cardCarrossel');
-            const detalhes = document.querySelectorAll('.divDetalhes');
-    
-            // Remove active de todos e adiciona apenas no clicado
-            cards.forEach((c, i) => c.classList.toggle('active', i === index));
-            detalhes.forEach((d, i) => d.classList.toggle('active', i === index));
+        return link;
+    }
+
+    async function carregarProjetos() {
+        try {
+            const resposta = await fetch(URL_PLANILHA);
+            const dadosTexto = await resposta.text();
+            const linhas = dadosTexto.split(/\r?\n/).filter(l => l.trim() !== "").map(l => l.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
             
-            // Reinicia os sliders internos para garantir que a transição comece da primeira foto
-            iniciarSlidersInternos();
-        }
-    
-        function moveSlide(direction) {
-            const container = document.getElementById('janelaCarrossel');
-            // Move o equivalente a um card (aprox 250px com gap)
-            const scrollAmount = 280; 
-            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-        }
-    
-        function iniciarSlidersInternos() {
-            intervalosSliders.forEach(clearInterval);
-            intervalosSliders = [];
-            document.querySelectorAll('.divDetalhes.active .divSliderFotos').forEach(container => {
-                let fotos = container.querySelectorAll('.fotoSlider');
-                let atual = 0;
-                if(fotos.length > 1) {
-                    intervalosSliders.push(setInterval(() => {
-                        fotos[atual].classList.remove('active');
-                        atual = (atual + 1) % fotos.length;
-                        fotos[atual].classList.add('active');
-                    }, 4000));
+            const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
+            const dadosProjetos = linhas.slice(1);
+            
+            const idxStatus = cabecalho.indexOf('status');
+            const idxTitulo = cabecalho.indexOf('titulo');
+            const idxImgPrincipal = cabecalho.indexOf('imagem_principal');
+            const idxImgsSec = cabecalho.indexOf('imagens_secundarias');
+            const idxDesc = cabecalho.indexOf('descricao');
+            const idxSituacao = cabecalho.indexOf('situacao');
+            const idxPublico = cabecalho.indexOf('publico_alvo');
+
+            const listaCards = document.getElementById('listaCardsCarrossel');
+            const listaDetalhes = document.getElementById('divCarrosselDetalhes');
+            listaCards.innerHTML = '';
+            listaDetalhes.innerHTML = '';
+
+            let indiceAtivo = 0;
+
+            dadosProjetos.forEach((coluna) => {
+                // Filtro de status rigoroso
+                const valorStatus = coluna[idxStatus] ? coluna[idxStatus].replace(/^"|"$/g, '').trim().toLowerCase() : "";
+                
+                if (valorStatus === 'ativo') {
+                    const titulo = coluna[idxTitulo].replace(/^"|"$/g, '').trim();
+                    const imgPrincipal = converterLinkDrive(coluna[idxImgPrincipal]);
+                    
+                    const card = document.createElement('div');
+                    card.className = `cardCarrossel ${indiceAtivo === 0 ? 'active' : ''}`;
+                    const meuIndice = indiceAtivo;
+                    card.onclick = () => showProject(meuIndice);
+                    card.innerHTML = `<img src="${imgPrincipal || 'imagens/favicon.png'}" alt="${titulo}"><h4>${titulo}</h4>`;
+                    listaCards.appendChild(card);
+
+                    const detalhe = document.createElement('div');
+                    detalhe.className = `divDetalhes ${indiceAtivo === 0 ? 'active' : ''}`;
+                    
+                    const rawSec = coluna[idxImgsSec].replace(/^"|"$/g, '').trim();
+                    const linksSec = rawSec.split(';').map(l => converterLinkDrive(l)).filter(l => l !== "");
+
+                    let fotosHtml = '';
+                    if (linksSec.length > 0) {
+                        linksSec.forEach((url, i) => {
+                            fotosHtml += `<img src="${url}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
+                        });
+                    } else {
+                        fotosHtml = `<img src="${imgPrincipal}" class="fotoSlider active">`;
+                    }
+
+                    detalhe.innerHTML = `
+                        <div class="divSliderFotos">${fotosHtml}</div>
+                        <div class="textoDetalhes">
+                            <p><strong>Descrição:</strong> ${coluna[idxDesc].replace(/^"|"$/g, '').trim()}</p>
+                            <p><strong>Situação:</strong> ${coluna[idxSituacao].replace(/^"|"$/g, '').trim()}</p>
+                            <p><strong>Público-alvo:</strong> ${coluna[idxPublico].replace(/^"|"$/g, '').trim()}</p>
+                        </div>`;
+                    listaDetalhes.appendChild(detalhe);
+                    indiceAtivo++;
                 }
             });
-        }
-    
-        document.addEventListener('DOMContentLoaded', carregarProjetos);
-    </script>
+            iniciarSlidersInternos();
+        } catch (e) { console.error(e); }
+    }
+
+    function showProject(index) {
+        const cards = document.querySelectorAll('.cardCarrossel');
+        const detalhes = document.querySelectorAll('.divDetalhes');
+        cards.forEach((c, i) => c.classList.toggle('active', i === index));
+        detalhes.forEach((d, i) => d.classList.toggle('active', i === index));
+        iniciarSlidersInternos();
+    }
+
+    function moveSlide(direction) {
+        const container = document.getElementById('janelaCarrossel');
+        const cardWidth = container.querySelector('.cardCarrossel').offsetWidth + 20; // Largura + Gap
+        container.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+    }
+
+    function iniciarSlidersInternos() {
+        intervalosSliders.forEach(clearInterval);
+        intervalosSliders = [];
+        document.querySelectorAll('.divDetalhes.active .divSliderFotos').forEach(container => {
+            let fotos = container.querySelectorAll('.fotoSlider');
+            let atual = 0;
+            if(fotos.length > 1) {
+                intervalosSliders.push(setInterval(() => {
+                    fotos[atual].classList.remove('active');
+                    atual = (atual + 1) % fotos.length;
+                    fotos[atual].classList.add('active');
+                }, 4000));
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarProjetos);
+</script>
     
 </body>
 </html>
