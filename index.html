@@ -296,6 +296,26 @@
                     listaDetalhes.appendChild(detalhe);
                     indiceAtivo++;
                 }
+            }
+                // 1. Conta quantos cards foram criados com status 'ativo'
+            const cardsCriados = listaCards.querySelectorAll('.cardCarrossel').length;
+            const janela = document.getElementById('janelaCarrossel');
+
+            // 2. Condicional de alinhamento
+            if (cardsCriados <= 4) {
+                janela.style.justifyContent = 'center';
+                listaCards.style.justifyContent = 'center';
+                listaCards.style.width = '100%'; // Garante que a lista use o espaço todo para centralizar
+                
+                // Opcional: Esconde as setas se não houver o que scrollar
+                document.querySelectorAll('.setaCarrossel').forEach(seta => seta.style.display = 'none');
+            } else {
+                janela.style.justifyContent = 'flex-start';
+                listaCards.style.justifyContent = 'flex-start';
+                listaCards.style.width = 'max-content'; // Permite que a lista cresça para o scroll
+                
+                // Mostra as setas se houver 5 ou mais cards
+                document.querySelectorAll('.setaCarrossel').forEach(seta => seta.style.display = 'block');
             });
             iniciarSlidersInternos();
         } catch (e) { console.error(e); }
