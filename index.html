@@ -206,13 +206,33 @@
     </footer>
 
     <script>
-    // 1. Configurações Iniciais - URL com o GID da nova aba "Projetos"
+    // 1. Configurações Iniciais - URL com o GID da aba "Projetos"
     const URL_PLANILHA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=2135806036&output=csv';
     let intervalosSliders = [];
 
     // 2. Atualização automática do ano no rodapé
     const elementoAno = document.getElementById('anoAtual');
     if (elementoAno) elementoAno.textContent = new Date().getFullYear();
+
+    /**
+     * Função auxiliar para limpar textos e converter links do Google Drive
+     * transforma links de visualização em links de imagem direta.
+     */
+    function tratarLink(url) {
+        if (!url) return "";
+        let link = url.replace(/^"|"$/g, '').trim();
+        
+        // Verifica se o link é do Google Drive
+        if (link.includes("drive.google.com")) {
+            // Regex para extrair o ID do arquivo entre /d/ e /view (ou fim da linha)
+            const match = link.match(/\/d\/(.+?)\/(view|edit|share)?/);
+            if (match && match[1]) {
+                // Formato de link direto para o Google Drive
+                return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
+            }
+        }
+        return link;
+    }
 
     // 3. Função Principal: Carregar dados da Planilha
     async function carregarProjetos() {
@@ -248,16 +268,15 @@
             let indiceAtivo = 0;
 
             dadosProjetos.forEach((coluna) => {
-                const limpar = (t) => t ? t.replace(/^"|"$/g, '').trim() : "";
-                const status = limpar(coluna[idxStatus]).toLowerCase();
+                const status = tratarLink(coluna[idxStatus]).toLowerCase();
                 
                 if (status === 'ativo') {
-                    const titulo = limpar(coluna[idxTitulo]);
-                    const imgPrincipal = limpar(coluna[idxImgPrincipal]);
-                    const imgsSecundarias = limpar(coluna[idxImgsSec]).split(';');
-                    const descricao = limpar(coluna[idxDesc]);
-                    const situacao = limpar(coluna[idxSituacao]);
-                    const publico = limpar(coluna[idxPublico]);
+                    const titulo = tratarLink(coluna[idxTitulo]);
+                    const imgPrincipal = tratarLink(coluna[idxImgPrincipal]);
+                    const imgsSecundariasRaw = tratarLink(coluna[idxImgsSec]).split(';');
+                    const descricao = tratarLink(coluna[idxDesc]);
+                    const situacao = tratarLink(coluna[idxSituacao]);
+                    const publico = tratarLink(coluna[idxPublico]);
 
                     // Criar Card Superior
                     const card = document.createElement('div');
@@ -275,10 +294,10 @@
                     detalhe.id = `projeto-${indiceAtivo}`;
                     
                     let fotosHtml = '';
-                    imgsSecundarias.forEach((url, i) => {
-                        const urlLimpa = url.trim();
-                        if(urlLimpa !== "") {
-                            fotosHtml += `<img src="${urlLimpa}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
+                    imgsSecundariasRaw.forEach((url, i) => {
+                        const urlTratada = tratarLink(url);
+                        if(urlTratada !== "") {
+                            fotosHtml += `<img src="${urlTratada}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
                         }
                     });
 
