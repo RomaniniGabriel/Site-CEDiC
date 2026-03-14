@@ -449,7 +449,7 @@ h4{ /*nome/título da área dos cards*/
     
     #listaCardsCarrossel { /*edita a lista de cards que vai dentro da "faixa" horizontal*/
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 15px;
         transition: all 0.5s ease;
     }
