@@ -205,7 +205,7 @@
         </div>
     </footer>
 
-    <script>
+   <script>
     // 1. Configurações Iniciais - URL com o GID da aba "Projetos"
     const URL_PLANILHA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=2135806036&output=csv';
     let intervalosSliders = [];
@@ -224,10 +224,10 @@
         
         // Verifica se o link é do Google Drive
         if (link.includes("drive.google.com")) {
-            // Regex para extrair o ID do arquivo entre /d/ e /view (ou fim da linha)
-            const match = link.match(/\/d\/(.+?)\/(view|edit|share)?/);
+            // Regex para extrair o ID do arquivo (ID fica entre /d/ e /view)
+            const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
             if (match && match[1]) {
-                // Formato de link direto para o Google Drive
+                // CORREÇÃO: Uso de template string correto com ${}
                 return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
             }
         }
