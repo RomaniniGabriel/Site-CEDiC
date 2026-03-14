@@ -215,7 +215,7 @@
     if (elementoAno) elementoAno.textContent = new Date().getFullYear();
 
     /**
-     * Função para converter links do Google Drive em links de imagem direta
+     * Converte links do Google Drive para links de visualização direta
      */
     function converterLinkDrive(url) {
         if (!url) return "";
@@ -224,7 +224,7 @@
         if (link.includes("drive.google.com")) {
             const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
             if (match && match[1]) {
-                // Link de visualização direta (Thumbnail de alta resolução)
+                // Formato estável para imagens de alta resolução
                 return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
             }
         }
@@ -268,9 +268,10 @@
                     const titulo = coluna[idxTitulo].replace(/^"|"$/g, '').trim();
                     const imgPrincipal = converterLinkDrive(coluna[idxImgPrincipal]);
                     
-                    // Tratamento especial para múltiplos links na mesma célula
                     const rawImgsSec = coluna[idxImgsSec].replace(/^"|"$/g, '').trim();
-                    const listaLinksSecundarios = rawImgsSec.split(';').map(link => converterLinkDrive(link)).filter(link => link !== "");
+                    const listaLinksSecundarios = rawImgsSec.split(';')
+                        .map(link => converterLinkDrive(link))
+                        .filter(link => link !== "");
 
                     const descricao = coluna[idxDesc].replace(/^"|"$/g, '').trim();
                     const situacao = coluna[idxSituacao].replace(/^"|"$/g, '').trim();
@@ -292,13 +293,12 @@
                     detalhe.id = `projeto-${indiceAtivo}`;
                     
                     let fotosHtml = '';
-                    // Se houver imagens secundárias, gera o slider
                     if (listaLinksSecundarios.length > 0) {
                         listaLinksSecundarios.forEach((url, i) => {
+                            // A classe active e a estrutura garantem a transição do CSS
                             fotosHtml += `<img src="${url}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
                         });
                     } else {
-                        // Fallback para a imagem principal se não houver secundárias
                         fotosHtml = `<img src="${imgPrincipal}" class="fotoSlider active">`;
                     }
 
@@ -316,10 +316,6 @@
                     indiceAtivo++;
                 }
             });
-
-            if (indiceAtivo === 0) {
-                listaCards.innerHTML = '<p>Nenhum projeto ativo encontrado.</p>';
-            }
 
             iniciarSlidersInternos();
 
@@ -345,8 +341,11 @@
             let fotoAtual = 0;
             if(fotos.length > 1) {
                 const int = setInterval(() => {
+                    // Remove a classe active com transição
                     fotos[fotoAtual].classList.remove('active');
+                    // Calcula a próxima
                     fotoAtual = (fotoAtual + 1) % fotos.length;
+                    // Adiciona a classe active na próxima
                     fotos[fotoAtual].classList.add('active');
                 }, 4000);
                 intervalosSliders.push(int);
