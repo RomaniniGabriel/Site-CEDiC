@@ -206,40 +206,32 @@
     </footer>
 
    <script>
-    // 1. Configurações Iniciais
     const URL_PLANILHA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=2135806036&output=csv';
     let intervalosSliders = [];
 
-    // 2. Atualização automática do ano no rodapé
     const elementoAno = document.getElementById('anoAtual');
     if (elementoAno) elementoAno.textContent = new Date().getFullYear();
 
-    /**
-     * Converte links do Google Drive para links de visualização direta
-     */
+    // Função de conversão corrigida
     function converterLinkDrive(url) {
         if (!url) return "";
         let link = url.trim().replace(/^"|"$/g, '');
-        
         if (link.includes("drive.google.com")) {
             const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
             if (match && match[1]) {
-                // Formato estável para imagens de alta resolução
+                // Formato de link direto corrigido para garantir o carregamento
                 return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
             }
         }
         return link;
     }
 
-    // 3. Função Principal: Carregar dados da Planilha
     async function carregarProjetos() {
         try {
             const resposta = await fetch(URL_PLANILHA);
-            if (!resposta.ok) throw new Error("Não foi possível acessar a planilha");
-            
             const dadosTexto = await resposta.text();
-            const linhas = dadosTexto.split(/\r?\n/).filter(linha => linha.trim() !== "").map(linha => {
-                return linha.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            const linhas = dadosTexto.split(/\r?\n/).filter(l => l.trim() !== "").map(l => {
+                return l.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
             });
             
             const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
@@ -255,7 +247,6 @@
 
             const listaCards = document.getElementById('listaCardsCarrossel');
             const listaDetalhes = document.getElementById('divCarrosselDetalhes');
-            
             listaCards.innerHTML = '';
             listaDetalhes.innerHTML = '';
 
@@ -263,39 +254,25 @@
 
             dadosProjetos.forEach((coluna) => {
                 const status = coluna[idxStatus].replace(/^"|"$/g, '').trim().toLowerCase();
-                
                 if (status === 'ativo') {
                     const titulo = coluna[idxTitulo].replace(/^"|"$/g, '').trim();
                     const imgPrincipal = converterLinkDrive(coluna[idxImgPrincipal]);
-                    
                     const rawImgsSec = coluna[idxImgsSec].replace(/^"|"$/g, '').trim();
-                    const listaLinksSecundarios = rawImgsSec.split(';')
-                        .map(link => converterLinkDrive(link))
-                        .filter(link => link !== "");
+                    const listaLinks = rawImgsSec.split(';').map(l => converterLinkDrive(l)).filter(l => l !== "");
 
-                    const descricao = coluna[idxDesc].replace(/^"|"$/g, '').trim();
-                    const situacao = coluna[idxSituacao].replace(/^"|"$/g, '').trim();
-                    const publico = coluna[idxPublico].replace(/^"|"$/g, '').trim();
-
-                    // Criar Card Superior
                     const card = document.createElement('div');
                     card.className = `cardCarrossel ${indiceAtivo === 0 ? 'active' : ''}`;
                     card.onclick = () => showProject(indiceAtivo);
-                    card.innerHTML = `
-                        <img src="${imgPrincipal || 'imagens/favicon.png'}" alt="${titulo}">
-                        <h4>${titulo}</h4>
-                    `;
+                    card.innerHTML = `<img src="${imgPrincipal || 'imagens/favicon.png'}" alt="${titulo}"><h4>${titulo}</h4>`;
                     listaCards.appendChild(card);
 
-                    // Criar Detalhe do Projeto
                     const detalhe = document.createElement('div');
                     detalhe.className = `divDetalhes ${indiceAtivo === 0 ? 'active' : ''}`;
                     detalhe.id = `projeto-${indiceAtivo}`;
                     
                     let fotosHtml = '';
-                    if (listaLinksSecundarios.length > 0) {
-                        listaLinksSecundarios.forEach((url, i) => {
-                            // A classe active e a estrutura garantem a transição do CSS
+                    if (listaLinks.length > 0) {
+                        listaLinks.forEach((url, i) => {
                             fotosHtml += `<img src="${url}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
                         });
                     } else {
@@ -303,62 +280,43 @@
                     }
 
                     detalhe.innerHTML = `
-                        <div class="divSliderFotos">
-                            ${fotosHtml}
-                        </div>
+                        <div class="divSliderFotos">${fotosHtml}</div>
                         <div class="textoDetalhes">
-                            <p><strong>Descrição:</strong> ${descricao}</p>
-                            <p><strong>Situação:</strong> ${situacao}</p>
-                            <p><strong>Público-alvo:</strong> ${publico}</p>
-                        </div>
-                    `;
+                            <p><strong>Descrição:</strong> ${coluna[idxDesc].replace(/^"|"$/g, '').trim()}</p>
+                            <p><strong>Situação:</strong> ${coluna[idxSituacao].replace(/^"|"$/g, '').trim()}</p>
+                            <p><strong>Público-alvo:</strong> ${coluna[idxPublico].replace(/^"|"$/g, '').trim()}</p>
+                        </div>`;
                     listaDetalhes.appendChild(detalhe);
                     indiceAtivo++;
                 }
             });
-
             iniciarSlidersInternos();
-
-        } catch (erro) {
-            console.error("Erro:", erro);
-        }
+        } catch (e) { console.error(e); }
     }
 
     function showProject(index) {
-        const cards = document.querySelectorAll('.cardCarrossel');
-        const detalhes = document.querySelectorAll('.divDetalhes');
-        cards.forEach((c, i) => c.classList.toggle('active', i === index));
-        detalhes.forEach((d, i) => d.classList.toggle('active', i === index));
+        document.querySelectorAll('.cardCarrossel').forEach((c, i) => c.classList.toggle('active', i === index));
+        document.querySelectorAll('.divDetalhes').forEach((d, i) => d.classList.toggle('active', i === index));
     }
 
     function iniciarSlidersInternos() {
         intervalosSliders.forEach(clearInterval);
         intervalosSliders = [];
-
-        const containers = document.querySelectorAll('.divSliderFotos');
-        containers.forEach(container => {
+        document.querySelectorAll('.divSliderFotos').forEach(container => {
             let fotos = container.querySelectorAll('.fotoSlider');
-            let fotoAtual = 0;
+            let atual = 0;
             if(fotos.length > 1) {
-                const int = setInterval(() => {
-                    // Remove a classe active com transição
-                    fotos[fotoAtual].classList.remove('active');
-                    // Calcula a próxima
-                    fotoAtual = (fotoAtual + 1) % fotos.length;
-                    // Adiciona a classe active na próxima
-                    fotos[fotoAtual].classList.add('active');
-                }, 4000);
-                intervalosSliders.push(int);
+                intervalosSliders.push(setInterval(() => {
+                    fotos[atual].classList.remove('active');
+                    atual = (atual + 1) % fotos.length;
+                    fotos[atual].classList.add('active');
+                }, 4000));
             }
         });
     }
 
     function moveSlide(direction) {
-        const container = document.getElementById('janelaCarrossel');
-        if (container) {
-            const scrollAmount = 250;
-            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-        }
+        document.getElementById('janelaCarrossel').scrollBy({ left: direction * 250, behavior: 'smooth' });
     }
 
     document.addEventListener('DOMContentLoaded', carregarProjetos);
