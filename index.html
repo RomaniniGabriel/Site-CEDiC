@@ -206,7 +206,7 @@
     </footer>
 
    <script>
-    // 1. Configurações Iniciais - URL com o GID da aba "Projetos"
+    // 1. Configurações Iniciais
     const URL_PLANILHA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=2135806036&output=csv';
     let intervalosSliders = [];
 
@@ -215,19 +215,16 @@
     if (elementoAno) elementoAno.textContent = new Date().getFullYear();
 
     /**
-     * Função auxiliar para limpar textos e converter links do Google Drive
-     * transforma links de visualização em links de imagem direta.
+     * Função para converter links do Google Drive em links de imagem direta
      */
-    function tratarLink(url) {
+    function converterLinkDrive(url) {
         if (!url) return "";
-        let link = url.replace(/^"|"$/g, '').trim();
+        let link = url.trim().replace(/^"|"$/g, '');
         
-        // Verifica se o link é do Google Drive
         if (link.includes("drive.google.com")) {
-            // Regex para extrair o ID do arquivo (ID fica entre /d/ e /view)
             const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
             if (match && match[1]) {
-                // CORREÇÃO: Uso de template string correto com ${}
+                // Link de visualização direta (Thumbnail de alta resolução)
                 return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
             }
         }
@@ -241,13 +238,10 @@
             if (!resposta.ok) throw new Error("Não foi possível acessar a planilha");
             
             const dadosTexto = await resposta.text();
-            
-            // Converte o CSV tratando vírgulas dentro de aspas
             const linhas = dadosTexto.split(/\r?\n/).filter(linha => linha.trim() !== "").map(linha => {
                 return linha.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
             });
             
-            // Mapeia o cabeçalho para encontrar as colunas dinamicamente
             const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
             const dadosProjetos = linhas.slice(1);
             
@@ -268,15 +262,19 @@
             let indiceAtivo = 0;
 
             dadosProjetos.forEach((coluna) => {
-                const status = tratarLink(coluna[idxStatus]).toLowerCase();
+                const status = coluna[idxStatus].replace(/^"|"$/g, '').trim().toLowerCase();
                 
                 if (status === 'ativo') {
-                    const titulo = tratarLink(coluna[idxTitulo]);
-                    const imgPrincipal = tratarLink(coluna[idxImgPrincipal]);
-                    const imgsSecundariasRaw = tratarLink(coluna[idxImgsSec]).split(';');
-                    const descricao = tratarLink(coluna[idxDesc]);
-                    const situacao = tratarLink(coluna[idxSituacao]);
-                    const publico = tratarLink(coluna[idxPublico]);
+                    const titulo = coluna[idxTitulo].replace(/^"|"$/g, '').trim();
+                    const imgPrincipal = converterLinkDrive(coluna[idxImgPrincipal]);
+                    
+                    // Tratamento especial para múltiplos links na mesma célula
+                    const rawImgsSec = coluna[idxImgsSec].replace(/^"|"$/g, '').trim();
+                    const listaLinksSecundarios = rawImgsSec.split(';').map(link => converterLinkDrive(link)).filter(link => link !== "");
+
+                    const descricao = coluna[idxDesc].replace(/^"|"$/g, '').trim();
+                    const situacao = coluna[idxSituacao].replace(/^"|"$/g, '').trim();
+                    const publico = coluna[idxPublico].replace(/^"|"$/g, '').trim();
 
                     // Criar Card Superior
                     const card = document.createElement('div');
@@ -294,14 +292,13 @@
                     detalhe.id = `projeto-${indiceAtivo}`;
                     
                     let fotosHtml = '';
-                    imgsSecundariasRaw.forEach((url, i) => {
-                        const urlTratada = tratarLink(url);
-                        if(urlTratada !== "") {
-                            fotosHtml += `<img src="${urlTratada}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
-                        }
-                    });
-
-                    if (fotosHtml === "") {
+                    // Se houver imagens secundárias, gera o slider
+                    if (listaLinksSecundarios.length > 0) {
+                        listaLinksSecundarios.forEach((url, i) => {
+                            fotosHtml += `<img src="${url}" class="fotoSlider ${i === 0 ? 'active' : ''}">`;
+                        });
+                    } else {
+                        // Fallback para a imagem principal se não houver secundárias
                         fotosHtml = `<img src="${imgPrincipal}" class="fotoSlider active">`;
                     }
 
@@ -328,15 +325,12 @@
 
         } catch (erro) {
             console.error("Erro:", erro);
-            document.getElementById('listaCardsCarrossel').innerHTML = '<p>Erro ao carregar projetos da planilha.</p>';
         }
     }
 
-    // 4. Funções de Controle de Interface
     function showProject(index) {
         const cards = document.querySelectorAll('.cardCarrossel');
         const detalhes = document.querySelectorAll('.divDetalhes');
-
         cards.forEach((c, i) => c.classList.toggle('active', i === index));
         detalhes.forEach((d, i) => d.classList.toggle('active', i === index));
     }
