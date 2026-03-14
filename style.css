@@ -443,6 +443,7 @@ h4{ /*nome/título da área dos cards*/
         overflow-x: hidden; /* Esconde a barra e força o uso das setas */
         scroll-behavior: smooth;
         display: flex;
+        justify-content: flex-start; /* Alinha ao início para o corte ser à direita */
         padding: 15px 0;
     }
     
@@ -454,7 +455,7 @@ h4{ /*nome/título da área dos cards*/
     }
 
     .cardCarrossel { /*edita o card do carrossel primário*/
-        flex: 0 0 calc(22%); /* Cálculo para mostrar 4 cards e um pedaço do 5º */
+        flex: 0 0 21.5%;  /*Exibe exatamente 4 cards inteiros e um pedaço do 5º (aprox 22% cada) */
         min-width: 200px;
         background-color: var(--bgHeader);
         border-radius: 12px;
