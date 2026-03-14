@@ -439,23 +439,23 @@ h4{ /*nome/título da área dos cards*/
         }
 
     #janelaCarrossel { /*edita a "faixa" horizontal de projetos do carrossel primário*/
-        overflow: hidden;
+        width: 90%; /* Ajustado para dar espaço às setas */
+        overflow-x: hidden; /* Esconde a barra e força o uso das setas */
+        scroll-behavior: smooth;
         display: flex;
-        justify-content: center;
-        /* Define o limite de largura para os cards. */
-        /* Se existirem muitos cards, eles ficarão "presos" nesse espaço e as setas não vão se afastar */
-        max-width: 850px; 
+        padding: 15px 0;
     }
     
     #listaCardsCarrossel { /*edita a lista de cards que vai dentro da "faixa" horizontal*/
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    padding: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        transition: all 0.5s ease;
     }
 
     .cardCarrossel { /*edita o card do carrossel primário*/
-        width: 250px;
+        flex: 0 0 calc(22%); /* Cálculo para mostrar 4 cards e um pedaço do 5º */
+        min-width: 200px;
         background-color: var(--bgHeader);
         border-radius: 12px;
         padding: 15px 10px;
