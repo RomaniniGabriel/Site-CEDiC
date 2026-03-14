@@ -445,7 +445,6 @@ h4{ /*nome/título da área dos cards*/
         overflow-x: hidden;
         scroll-behavior: smooth;
         display: flex;
-        justify-content: flex-start;
         padding: 15px 0px;
     }
     
