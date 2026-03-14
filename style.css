@@ -418,7 +418,7 @@ h4{ /*nome/título da área dos cards*/
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        gap: 10px; /* Controla a distância exata entre a seta e o card */
+        gap: 50px; /* Controla a distância exata entre a seta e o card */
         width: 100%;
     }
 
