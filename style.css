@@ -417,7 +417,7 @@ h4{ /*nome/título da área dos cards*/
     #divCarrosselProjetos {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 10px; /* Controla a distância exata entre a seta e o card */
         width: 100%;
     }
@@ -439,11 +439,12 @@ h4{ /*nome/título da área dos cards*/
         }
 
     #janelaCarrossel { /*edita a "faixa" horizontal de projetos do carrossel primário*/
-        width: 90%; /* Ajustado para dar espaço às setas */
-        overflow-x: hidden; /* Esconde a barra e força o uso das setas */
+        width: 100%; /* Ocupa o espaço disponível entre as setas */
+        overflow-x: hidden;
         scroll-behavior: smooth;
         display: flex;
-        justify-content: flex-start; /* Alinha ao início para o corte ser à direita */
+        /* Garante que o conteúdo comece na esquerda */
+        justify-content: flex-start; 
         padding: 15px 0;
     }
     
@@ -455,7 +456,7 @@ h4{ /*nome/título da área dos cards*/
     }
 
     .cardCarrossel { /*edita o card do carrossel primário*/
-        flex: 0 0 21.5%;  /*Exibe exatamente 4 cards inteiros e um pedaço do 5º (aprox 22% cada) */
+        flex: 0 0 22%; /* 22% fará com que 4 cards ocupem 88%, sobrando 12% para o próximo */
         min-width: 200px;
         background-color: var(--bgHeader);
         border-radius: 12px;
