@@ -533,8 +533,22 @@ h4{ /*nome/título da área dos cards*/
         border-bottom-left-radius: 10px;
     }
 
-    .fotoSlider.active { 
+
+    .fotoSlider { /*edita a imagem/foto que via dentro do slider da div de explicação*/
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /*A imagem preenche o espaço mantendo sua proporção original, sem distorção*/
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out; /* Transição de saída rápida (0.4s) para limpar o rastro da imagem anterior */
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    .fotoSlider.active { /* Estilo ativo: define como a imagem se comporta ao ENTRAR */
         opacity: 1;
+        /* Transição de entrada mais lenta (0.8s) para um efeito suave sobre o preto */
+        transition: opacity 0.8s ease-in-out;
     }
 
     .textoDetalhes { /*edita o texto explicativo que vai dentro da div de explicação */
