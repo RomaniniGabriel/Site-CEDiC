@@ -212,14 +212,14 @@
     const elementoAno = document.getElementById('anoAtual');
     if (elementoAno) elementoAno.textContent = new Date().getFullYear();
 
-    // Função de conversão corrigida
     function converterLinkDrive(url) {
         if (!url) return "";
         let link = url.trim().replace(/^"|"$/g, '');
         if (link.includes("drive.google.com")) {
+            // Busca o ID do arquivo no link
             const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
             if (match && match[1]) {
-                // Formato de link direto corrigido para garantir o carregamento
+                // URL correta para renderizar a imagem diretamente no <img>
                 return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
             }
         }
