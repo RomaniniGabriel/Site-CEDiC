@@ -216,10 +216,9 @@
         if (!url) return "";
         let link = url.trim().replace(/^"|"$/g, '');
         if (link.includes("drive.google.com")) {
-            // Busca o ID do arquivo no link
             const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
             if (match && match[1]) {
-                // URL correta para renderizar a imagem diretamente no <img>
+                // Uso correto de crases e do cifrão para interpolação de string
                 return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
             }
         }
