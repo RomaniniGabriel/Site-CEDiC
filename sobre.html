@@ -24,8 +24,8 @@
                 </div>
             </a>
         </div>
-
-        <nav class="menu">
+        <button class="menu-hamburger" onclick="toggleMenu()">&#9776;</button><!-- Ícone de "três risquinhos" -->
+        <nav class="menu" id="menuPrincipal">
             <ul>
                 <li><a class="menuItem" href="index.html">Início</a></li>
                 <li><a class="menuItem" href="index.html#secaoMateriasDosExperimentos">Experimentos</a>
@@ -40,7 +40,7 @@
                 </li>
                 <li><a class="menuItem" href="index.html#secaoProjetos">Projetos</a></li>
                 <li><a class="menuItem" href="#sobre">Sobre</a></li>
-                <li><a href="index.html#visitas">Visitas</a></li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdp_n6lfP66OZlM6S184Yg8C4UWo00gCVWSrr4mUwTnwPUoLw/viewform">Visitas</a></li>
             </ul>
         </nav>
     </header>
@@ -54,42 +54,47 @@
 
         <section class="conteudo-principal">
             <article class="secao-texto">
-                <h2>O início de um <strong>sonho</strong></h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus pellentesque metus, non volutpat urna elementum quis. Sed scelerisque, nisi at tincidunt cursus, erat risus sagittis metus, vel mollis tortor orci suscipit sapien. Aenean leo nisl, condimentum vitae semper in, auctor non leo. Proin pulvinar felis ante, et placerat massa vestibulum vitae. Ut vitae egestas urna. Mauris vitae eleifend sem. Morbi ornare nulla at elit tempus interdum. Curabitur ultrices faucibus nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris non leo lacus. Integer in ullamcorper sapien. Ut lacinia diam dolor. Aenean a facilisis mi. Maecenas consectetur ut est sed ornare. Ut aliquet venenatis nulla, eu bibendum purus fringilla ut.</p>
+                <h2>O início da <strong>jornada</strong></h2>
+                <p>De acordo com a Constituição Federal de 1988, as "universidades [...] obedecerão ao princípio de indissociabilidade entre ensino, pesquisa e extensão". Essa filosofia sobre o papel das universidades em meio à sociedade vigora ao redor do globo, com os dois primeiros pilares já bem fundamentados no meio científico. Porém, o Brasil encabeça a vanguarda do pensamento ao acrescentar a extensão como responsabilidade social das universidades.</p>
                 <br>
-                <p>Etiam velit felis, varius ut nisl non, facilisis blandit lorem. Etiam rutrum erat in porttitor ultricies. Aliquam dictum sem sed libero varius dictum. Nulla iaculis ipsum ligula, non commodo elit viverra ut. Vestibulum semper, velit a vestibulum porta, urna dui sodales dolor, in ullamcorper lectus sapien eu tellus. Mauris in ex ut elit semper pharetra. Maecenas enim felis, rhoncus nec commodo nec, interdum quis dui. Pellentesque mi dui, dignissim a elit eget, vestibulum semper nisi. Sed fringilla, nisi sed feugiat mattis, dui turpis aliquet sapien, in sagittis ligula ligula nec dolor.</p>
+                <p>Nesse sentido, em 2022, a Congregação da Faculdade de Ciências (FC) da UNESP - Bauru criou o Centro de Extensão e Divulgação Científica (CEDiC) para nortear as atividades e iniciativas extensionistas no âmbito da unidade. O gesto representou a ambição da UNESP em se tornar referencial nacional e mundial na construção e implementaçaõ da extensão no cotidiano acadêmico.</p>
+                <br>
+                <p>Já em 2023, visando criar uma base para a execução da extensão, foi aprovado um projeto para financiamento de adequações necessárias à realização de atividades práticas de ciências no CEDiC por meio do Edital Finep "Praças de Ciências". Em 2025, o CEDiC foi aprovado como Programa de Extensão (PrEx) da UNESP, visando ampliar sua atuação para outras unidades além da FC, bem como atender mais iniciativas extensionistas.</p>
             </article>
 
             <article class="secao-texto">
-                <h2>O <strong>avanço</strong> para uma nova era</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus pellentesque metus, non volutpat urna elementum quis. Sed scelerisque, nisi at tincidunt cursus, erat risus sagittis metus, vel mollis tortor orci suscipit sapien. Aenean leo nisl, condimentum vitae semper in, auctor non leo. Proin pulvinar felis ante, et placerat massa vestibulum vitae. Ut vitae egestas urna. Mauris vitae eleifend sem. Morbi ornare nulla at elit tempus interdum. Curabitur ultrices faucibus nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris non leo lacus. Integer in ullamcorper sapien. Ut lacinia diam dolor. Aenean a facilisis mi. Maecenas consectetur ut est sed ornare. Ut aliquet venenatis nulla, eu bibendum purus fringilla ut.</p>
+                <h2>Os <strong>marcos principais</strong> até agora</h2>
+                <p>Atualmente, o CEDiC se notabiliza por aproximar estudantes da realidade universitária através de visitas guiadas às dependências do campus Bauru, idas a feiras de ciências e participação em eventos socioambentais. Em tais momentos, a discussão de conceitos é feita de modo a valorizar o conhecimento que cada jovem possui, permitindo-os testar suas hipóteses e aprender com maior engajamento.</p>
                 <br>
-                <p>Etiam velit felis, varius ut nisl non, facilisis blandit lorem. Etiam rutrum erat in porttitor ultricies. Aliquam dictum sem sed libero varius dictum. Nulla iaculis ipsum ligula, non commodo elit viverra ut. Vestibulum semper, velit a vestibulum porta, urna dui sodales dolor, in ullamcorper lectus sapien eu tellus. Mauris in ex ut elit semper pharetra. Maecenas enim felis, rhoncus nec commodo nec, interdum quis dui. Pellentesque mi dui, dignissim a elit eget, vestibulum semper nisi. Sed fringilla, nisi sed feugiat mattis, dui turpis aliquet sapien, in sagittis ligula ligula nec dolor.</p>
-
+                <p>Devido à grandiosidade da proposta, o  CEDiC ganhou destaque ao ser reconhecido em diversos eventos educacionais, com destaque para o VIII Congresso Brasileiro de Educação e o VII Congresso de Biologia. Ademais, diversas produções científicas são originadas a partir dos estudos, experimentos e práticas desenvolvidas por seus integrantes, nas quais docentes e discentes alinham os três pilares da universidade. Assim, o centro se coloca como agente de referência cada vez maior na temática extensionistas.</p>
+            </article>
+            
             <article class="secao-texto">
-                <h2>O CEDiC no <strong>mundo digital</strong></h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus pellentesque metus, non volutpat urna elementum quis. Sed scelerisque, nisi at tincidunt cursus, erat risus sagittis metus, vel mollis tortor orci suscipit sapien. Aenean leo nisl, condimentum vitae semper in, auctor non leo. Proin pulvinar felis ante, et placerat massa vestibulum vitae. Ut vitae egestas urna. Mauris vitae eleifend sem. Morbi ornare nulla at elit tempus interdum. Curabitur ultrices faucibus nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris non leo lacus. Integer in ullamcorper sapien. Ut lacinia diam dolor. Aenean a facilisis mi. Maecenas consectetur ut est sed ornare. Ut aliquet venenatis nulla, eu bibendum purus fringilla ut.</p>
+                <h2>O CEDiC na <strong>UNESP</strong></h2>
+                <p>Enquanto espaço destinado à divulgação científica e Programa de Extensão (PrEx) da UNESP, o CEDiC tem como objetivos promover ações integradas de ensino, pesquisa e extensão; e atuar como instrumento de apoio para o desenvolvimento de ações multidisciplinares de extensão universitária e ensino. Ou seja, ele funciona como um "guarda-chuva" para projetos e iniciativas, criando, auxiliando e desenvolvendo ações voltadas para a comunidade externa à UNESP.</p>
                 <br>
-                <p>Etiam velit felis, varius ut nisl non, facilisis blandit lorem. Etiam rutrum erat in porttitor ultricies. Aliquam dictum sem sed libero varius dictum. Nulla iaculis ipsum ligula, non commodo elit viverra ut. Vestibulum semper, velit a vestibulum porta, urna dui sodales dolor, in ullamcorper lectus sapien eu tellus. Mauris in ex ut elit semper pharetra. Maecenas enim felis, rhoncus nec commodo nec, interdum quis dui. Pellentesque mi dui, dignissim a elit eget, vestibulum semper nisi. Sed fringilla, nisi sed feugiat mattis, dui turpis aliquet sapien, in sagittis ligula ligula nec dolor.</p>
+                <p>Dado o escopo vasto e inovador, o centro permite a participação de discentes das mais variadas áreas e cursos, não se restringindo somente à Faculdade de Ciências. Cada estudante é capaz de promover uma nova proposta, trabalhar em uma vertente já existe ou contribuir com a organização da equipe. Com isso, a capacidade de impacto na sociedade que abriga a universidade possui grande notoriedade, conciliando os conhecimentos técnicos aprendidos com o desenvolvimento da cidadania e seu exercício.</p>
+            </article>
 
             <section class="linha-tempo">
-                <h2>Nossa Trajetória</h2>
+                </article>
+                <h2><strong>Trajetória</strong> do programa</h2>
                 <div class="timeline-container">
                     <div class="timeline-item">
                         <img src="imagens/fachadaCedic.jpg" alt="2009">
-                        <span>2009: Início</span>
+                        <span>2022: Início</span>
                     </div>
                     <div class="timeline-item">
                         <img src="imagens/fachadaCedic.jpg" alt="2015">
-                        <span>2015: Expansão</span>
+                        <span>2025: Expansão</span>
                     </div>
                     <div class="timeline-item">
                         <img src="imagens/fachadaCedic.jpg" alt="2020">
-                        <span>2020: Digital</span>
+                        <span>2026: Consolidação</span>
                     </div>
                     <div class="timeline-item">
                         <img src="imagens/fachadaCedic.jpg" alt="Hoje">
-                        <span>Hoje: Referência</span>
+                        <span>Equipe Atual</span>
                     </div>
                 </div>
             </section>
@@ -111,15 +116,15 @@
                 <p style="margin-bottom: 20px;">CEP 17048-699</p>
                 
                 <h3>Contato</h3>
-                <p>Tel: (14) XXXX-XXXX</p>
-                <p>E-mail: <a href="mailto:aaaaaaaaa@unesp.br" class="linkEmail">aaaaaaaaa@unesp.br</a></p>
+                <p>Tel: <span id="footer_telefone"></span></p>
+                <p>E-mail: <a href="" id="footer_email_link" class="linkEmail"><span id="footer_email"></span></a></p>
             </div>
 
             <div class="colunaDivRodape">
                 <h3>Links Rápidos</h3>
                 <ul class="linksRodape">
                     <li>
-                        <a href="https://www.instagram.com" target="_blank">
+                        <a href="" id="footer_instagram_link" target="_blank">
                             <img src="imagens/Instagram_icon.png" alt="Instagram" class="iconeLink"> 
                             <span>Instagram</span>
                         </a>
@@ -149,5 +154,68 @@
     <script>
         document.getElementById('anoAtual').textContent = new Date().getFullYear();
     </script>
+
+    <script>
+    function toggleMenu() {
+        const menu = document.getElementById('menuPrincipal');
+        menu.classList.toggle('active'); 
+    }
+</script>
+
+<script>
+    // Script para atualizar informações de contato via Planilha (Aba Equipe)
+    const URL_PLANILHA_CONTATO = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=1906912128&single=true&output=csv';
+
+    async function carregarDadosContatoFooter() {
+        try {
+            const resposta = await fetch(URL_PLANILHA_CONTATO);
+            const dadosTexto = await resposta.text();
+            
+            // Converte CSV em Array considerando vírgulas dentro de aspas
+            const linhas = dadosTexto.split(/\r?\n/).filter(l => l.trim() !== "").map(l => l.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
+            const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
+            
+            // Mapeia os índices das colunas necessárias
+            const idxTelefone = cabecalho.indexOf('telefone');
+            const idxEmail = cabecalho.indexOf('email');
+            const idxInstagram = cabecalho.indexOf('instagram');
+
+            if (linhas.length > 1) {
+                const dados = linhas[1]; // Pega a primeira linha de dados após o cabeçalho
+
+                // 1. Atualiza Telefone
+                if (idxTelefone !== -1) {
+                    const tel = dados[idxTelefone].replace(/^"|"$/g, '').trim();
+                    const elTel = document.getElementById('footer_telefone');
+                    if (elTel) elTel.textContent = tel;
+                }
+
+                // 2. Atualiza E-mail
+                if (idxEmail !== -1) {
+                    const email = dados[idxEmail].replace(/^"|"$/g, '').trim();
+                    const elEmailText = document.getElementById('footer_email');
+                    const elEmailLink = document.getElementById('footer_email_link');
+                    if (elEmailText) elEmailText.textContent = email;
+                    if (elEmailLink) elEmailLink.href = `mailto:${email}`;
+                }
+
+                // 3. Atualiza Link do Instagram
+                if (idxInstagram !== -1) {
+                    const insta = dados[idxInstagram].replace(/^"|"$/g, '').trim();
+                    const elInstaLink = document.getElementById('footer_instagram_link');
+                    if (elInstaLink && insta) {
+                        // Garante que o link tenha o protocolo completo
+                        elInstaLink.href = insta.startsWith('http') ? insta : `https://instagram.com/${insta.replace('@','')}`;
+                    }
+                }
+            }
+        } catch (erro) {
+            console.error("Erro ao carregar dados de contato do footer:", erro);
+        }
+    }
+
+    // Inicializa a carga ao abrir a página
+    document.addEventListener('DOMContentLoaded', carregarDadosContatoFooter);
+</script>
 </body>
 </html>

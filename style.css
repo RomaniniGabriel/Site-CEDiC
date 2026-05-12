@@ -1,11 +1,12 @@
 /*----------------------- Pré Configurações ---------------------------*/
 
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root{ /*Definindo as cores padrões para o texto, o bg da página e o bg do cabeçalho*/
     --text: black;
     --bg: #fff;
     --bgHeader: white;
+    --font-main: 'Roboto', sans-serif;
 }
 
 *{
@@ -14,7 +15,7 @@
     box-sizing: border-box;
     padding: 0;
     text-decoration: none; 
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; /*Talvez eu mude daqui para permitir outras fontes ao longo da página e não haver conflito*/
+    font-family: var(--font-main);
 }
 
 html{
@@ -73,15 +74,16 @@ body{
 }
 
 .logos{
-    width: 30%; /*Tamanho da div*/
+    width: auto; /*Tamanho da div*/
 }
 
 .linkLogos{
-    width: 100%;
+    width: auto;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 .divLogos{
@@ -91,11 +93,11 @@ body{
 }
 
 #divLogos1{
-    width: 30%;
+    width: 120px;
 }
 
 #divLogos2{
-    width: 50%;
+    width: 250px;
 }
 
 #logo1{
@@ -103,13 +105,22 @@ body{
 }
 
 #logo2 {
-    width: 130%;
+    width: 100%;
     border-left: 1px solid var(--text);
 }
 
 #logo2Black{
-    width: 130%;
+    width: 100%;
     border-left: 1px solid var(--text);
+}
+
+.menu-hamburger {
+    display: none; /* Escondido no computador */
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: var(--text);
+    cursor: pointer;
 }
 
 .menu{
@@ -174,20 +185,57 @@ nav li:hover > ul{
     display: block /*Quando o cursor passar pelo li, a lista secundária (ul) aparecerá (justamente a função da variável "display")*/
 }
 
-@media (max-width: 1040px){
+@media (max-width: 1060px) {
+        .logos {
+            width: 100%; /* Faz a logo ocupar a largura total para centralizar */
+            margin-bottom: 15px;
+        }
+    
+        .linkLogos {
+            justify-content: center; /* Centraliza as logos no topo */
+        }
+
+        .menu {
+            width: 100%;
+            justify-content: center;
+        }
+        .cabecalho {
+            
+            flex-direction: column; /* Empilha a logo e o menu */
+            padding: 10px;
+            height: auto; /* Permite que o fundo acompanhe o crescimento do menu */
+        }
+
+    
+    }
+
+@media (max-width: 680px) {
+    .menu-hamburger {
+        display: block; /* Aparece apenas em telas menores */
+    }
+
+    .menu {
+        display: none; /* Esconde o menu de links por padrão no mobile[cite: 1] */
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        top: 100%; /* Aparece logo abaixo do header */
+        left: 0;
+        flex-direction: column;
+        z-index: 10000;
+        align-items: center;
+    }
+
+    /* Classe que será adicionada via JavaScript para mostrar o menu */
+    .menu.active {
+        display: flex !important;
+    }
+
     nav > ul {
         flex-direction: column;
-    }
-
-    nav li{
-        position: relative;
-    }
-
-    nav li ul{
-        display: none;
-        position: absolute;
-        left: 100%;
-        top: -4px ;
+        width: 100%;
+        padding: 20px 0; /* Ajuste o padding para não empurrar lateralmente */
+        align-items: center;
     }
 }
 
@@ -285,6 +333,7 @@ nav li:hover > ul{
 #textoMaterias{ /*edição para o título h3 da seção*/
     font-size: 25px;
     text-align: center;
+    padding: 0 10px 0 10px
 }
 
 #materias{ /*edição da div que contém os cards com as áreas para experimentos*/
@@ -296,6 +345,7 @@ nav li:hover > ul{
     align-items: center; /*Alinha os itens entre o topo e o rodapé. Centraliza verticalmente*/
     justify-content: space-around; /*Alinha os itens horizontalmente*/
     padding: 30px;
+    gap: 15px;
 }
 
 .card{ /*edição dos cards das áreas em si*/
@@ -372,14 +422,13 @@ h4{ /*nome/título da área dos cards*/
 .textoDivConteudo { /*edição da div que contém a parte textual da seção*/
     border-top: 1px solid white;
     border-bottom: 1px solid white;
-    width: 40%;
+    width: 45%;
     text-align: justify;
-    font-size: large;
+    font-size: 1.1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-bottom: 20px;
-    padding-top: 20px;
+    padding: 20px 0;
 }
 
 .textoDivConteudo h3 { /*Edição do título da div textual*/
@@ -392,11 +441,67 @@ h4{ /*nome/título da área dos cards*/
     margin: 0; 
 }
 
+.textoDivConteudo a{
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.3s ease;
+    color: white;
+}
+
+.textoDivConteudo a:hover{
+    color: #4ade80;
+    transform: scale(0.96);
+}
+
 #fachadaCedic{ /*edição da imagem contida na divConteudo*/
     display: block;
+    width: 45%;      /* Define uma largura percentual para ser responsiva */
+    max-width: 500px; /* Impede que a imagem fique grande demais em telas ultra-wide */
     height: auto; /* Mantém a proporção */
-    align-self: center;
+    object-fit: cover;
     border-radius: 10px;
+}
+
+/*Quinta seção (espaço físico): início*/
+/*Como a seção usa a mesma estilização da seção 3 (o que é), a única coisa que precisa ser editada é a imagem. Por causa do media query, sua declaração precisa ser feita antes do @media; por isso a quinta seção está aninhada dentro da terceira*/
+#plantaBaixaCedic{ /*edição da imagem da seção*/
+    display: block;
+    width: 40%;       /* Largura relativa para ser responsiva */
+    max-width: 600px;  /* Limite para não estourar em telas grandes */
+    height: auto;
+    border-radius: 10px;
+    object-fit: contain; /* Como é uma planta técnica, 'contain' evita cortes */
+    
+}
+/*Quinta seção: fim*/
+
+@media (max-width: 850px) {
+    #divConteudo {
+        flex-direction: column; /* Empilha texto e imagem */
+        padding: 40px 20px;
+    }
+
+    .textoDivConteudo, #fachadaCedic {
+        width: 100%;   /* Ambos ocupam a largura total no mobile */
+        max-width: none;
+    }
+
+    .textoDivConteudo{
+        order: 1;
+    }
+
+    #fachadaCedic {
+        width: 80%;       /* Em vez de 100%, ela ocupa 80% da largura do celular */
+        max-width: 500px;
+        margin-top: 30px; /* Espaço entre o texto e a imagem quando empilhados */
+        order: 2;
+    }
+
+    #plantaBaixaCedic {
+        width: 85%;       /* Um pouco maior que a fachada por ser um mapa técnico[cite: 2] */
+        max-width: 500px;  /* Mantém o controle para não ficar gigante[cite: 2] */
+        margin: 30px auto 0 auto; /* Centraliza e dá espaço para o texto que vem abaixo[cite: 2] */
+        order: 2;
+    }
 }
 /*Terceira seção: fim*/
 
@@ -472,8 +577,9 @@ h4{ /*nome/título da área dos cards*/
     }
 
     .cardCarrossel img { /*edita a imagem que vai no card do carrossel primário*/
-        width: 100%;
-        object-fit: contain;
+        aspect-ratio: 4 / 3;
+        max-width: 100%;
+        object-fit: cover;
         margin-bottom: 12px;
     }
 
@@ -501,12 +607,13 @@ h4{ /*nome/título da área dos cards*/
     #divCarrosselDetalhes {/*edita a div que contém todas explicações de todos os cards*/
         width: 90%;
         max-width: 900px;
-        height: 300px; 
+        height: 400px; 
         margin: 30px auto;
         background-color: var(--bgHeader); /* Mantém consistência com o tema */
         display: flex; /* Para alinhar o conteúdo interno */
         border-radius: 10px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden; /* Garante que nada saia das bordas arredondadas */
     }
 
     .divDetalhes { /*edita a div de explicação que contém o slider de fotos e o texto de explicação*/
@@ -559,20 +666,24 @@ h4{ /*nome/título da área dos cards*/
         flex: 1; /* Ocupa a outra metade da div de explicação*/
         padding: 10px 30px 10px 30px;
         overflow-y: auto; /* Caso o parágrafo seja longo, gera scroll interno */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        display: block;
         text-align: justify;
     }
+
+    .textoDetalhes p{
+        padding-bottom: 15px;
+    }
+
+    .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
+    min-height: 100%;       /* O "pulo do gato": se o texto for curto, ocupa 100% e centraliza. 
+                               Se for longo, cresce além de 100% e o scroll da div pai funciona[cite: 4] */
+    width: 100%;
+}
 /*Carrossel secundário: fim*/
 /*Quarta seção: fim*/
-
-/*Quinta seção (espaço físico): início*/
-/*Como a seção usa a mesma estilização da seção 3 (o que é), a única coisa que precisa ser editada é a imagem*/
-#plantaBaixaCedic{ /*edição da imagem da seção*/
-    width: 25%;
-}
-/*Quinta seção: fim*/
 
 /*Sexta seção (frase final): início*/
 #fraseFinal { /*edição da seção. As propriedades para a div que contém a frase e o botão não são declaradas pois o design dela corresponde as propriedades padrão*/
@@ -771,3 +882,4 @@ h4{ /*nome/título da área dos cards*/
 }
 
 /*-------------------------- Rodapé ---------------------------*/
+/*Ao tentar fazer a responsividade para telas de até 320 px, algum conteúdo está estourando a tela. Pela implementação da responsividade na página sobre, fica claro que não é o cabeçalho. Pode ser o card de projetos ou algo a mais.*/

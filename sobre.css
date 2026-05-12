@@ -32,17 +32,23 @@
 }
 
 .secao-texto {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
-.secao-texto strong {
+.secao-texto strong, .linha-tempo strong  {
     color: rgb(0, 132, 74);
     margin-bottom: 20px;
     padding-bottom: 10px;
+    
 }
 
-.secao-texto h2 {
+.secao-texto h2, .linha-tempo h2{
    border-bottom: 2px solid #eee;
+}
+
+.secao-texto p{
+    padding-top: 10px;
+    text-align: justify;
 }
 
 /* Estilo da Linha Cronológica */
@@ -82,21 +88,38 @@
 /* Responsividade para Celulares */
 @media (max-width: 1040px) {
     .layout-sobre {
-        flex-direction: column;
+        flex-direction: column; /* Empilha a sidebar sobre o conteúdo */
+        margin-top: 140px; /* Ajuste se o header mobile for maior */
     }
+
     .sidebar-sobre {
-        position: relative;
+        position: relative; /* Remove o sticky para não flutuar no topo */
         top: 0;
         width: 100%;
-        height: auto;
+        height: 300px; /* Altura fixa para servir de banner no mobile */
         text-align: center;
+        padding: 20px;
     }
+
     .conteudo-principal {
-        margin-left: 0;
-        width: 100%;
-        padding: 30px;
+        width: 100%; /* Ocupa a largura total da tela */
+        padding: 40px 20px;
     }
+}
+
+
+@media (max-width: 768px) {
     .timeline-container {
-        flex-direction: column;
+        flex-direction: column; /* Empilha os eventos da trajetória[cite: 4] */
+        gap: 30px;
+    }
+
+    .timeline-item img {
+        width: 80%;       /* Em vez de 100%, ela ocupa 80% da largura do celular */
+        max-width: 500px;
+    }
+
+    .secao-texto h2 {
+        font-size: 1.5rem; /* Ajusta títulos para não quebrarem linha de forma estranha */
     }
 }
