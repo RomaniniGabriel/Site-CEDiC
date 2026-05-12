@@ -23,8 +23,8 @@
                 </div>
             </a>
         </div>
-
-        <nav class="menu">
+        <button class="menu-hamburger" onclick="toggleMenu()">&#9776;</button><!-- Ícone de "três risquinhos" -->
+        <nav class="menu" id="menuPrincipal">
             <ul>
                 <li><a class="menuItem" href="../../index.html">Início</a></li>
                 <li><a class="menuItem" href="../../index.html#secaoMateriasDosExperimentos">Experimentos</a>
@@ -39,53 +39,32 @@
                 </li>
                 <li><a class="menuItem" href="../../index.html#secaoProjetos">Projetos</a></li>
                 <li><a class="menuItem" href="../../sobre.html">Sobre</a></li>
-                <li><a href="../../index.html#visitas">Visitas</a></li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdp_n6lfP66OZlM6S184Yg8C4UWo00gCVWSrr4mUwTnwPUoLw/viewform">Visitas</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="principal">
-    <section class="banner"></section>
+        <section class="banner"></section>
 
-    <section class="secao-experimentos">
-        <div class="grade-experimentos">
-            <div class="card-exp" onclick="abrirModal('exp1')">
-                <div class="imagem-container">
-                    <img src="../../imagens/fachadaCedic.jpg" alt="Nome do Experimento">
+        <section class="secao-experimentos">
+            <h1>Experimentos de Química</h1>
+            <p>Explore as reações e fenômenos do mundo molecular através dos nossos experimentos dinâmicos.</p>
+            
+            <div class="grade-experimentos">
                 </div>
-                <h3>Reação de Maillard</h3>
-                <p>Breve descrição chamativa do experimento.</p>
-            </div>
+        </section>
 
-            <div class="card-exp" onclick="abrirModal('exp1')">
-                <div class="imagem-container">
-                    <img src="../../imagens/fachadaCedic.jpg" alt="Nome do Experimento">
-                </div>
-                <h3>Reação de Maillard</h3>
-                <p>Breve descrição chamativa do experimento.</p>
-            </div>
-
-            <div class="card-exp" onclick="abrirModal('exp1')">
-                <div class="imagem-container">
-                    <img src="../../imagens/fachadaCedic.jpg" alt="Nome do Experimento">
-                </div>
-                <h3>Reação de Maillard</h3>
-                <p>Breve descrição chamativa do experimento.</p>
+        <div id="modalExperimento" class="modal">
+            <div class="modal-conteudo">
+                <span class="fechar" onclick="fecharModal()">&times;</span>
+                <div id="detalhesExp">
+                    </div>
             </div>
         </div>
-    </section>
-
-    <div id="modalExperimento" class="modal" onclick="fecharModal()">
-        <div class="modal-conteudo" onclick="event.stopPropagation()">
-            <span class="fechar">&times;</span>
-            <div id="detalhesExp">
-                </div>
-        </div>
-    </div>
+    </main>
     
-</main>
-    
-        <footer class="rodape">
+    <footer class="rodape">
         <div class="divRodape">
             <div class="colunaDivRodape">
                 <img src="../../imagens/logoCEDICMestra.png" alt="Logo expandida do CEDiC" class="logoRodape">
@@ -100,15 +79,15 @@
                 <p style="margin-bottom: 20px;">CEP 17048-699</p>
                 
                 <h3>Contato</h3>
-                <p>Tel: (14) XXXX-XXXX</p>
-                <p>E-mail: <a href="mailto:aaaaaaaaa@unesp.br" class="linkEmail">aaaaaaaaa@unesp.br</a></p>
+                <p>Tel: <span id="footer_telefone"></span></p>
+                <p>E-mail: <a href="" id="footer_email_link" class="linkEmail"><span id="footer_email"></span></a></p>
             </div>
 
             <div class="colunaDivRodape">
                 <h3>Links Rápidos</h3>
                 <ul class="linksRodape">
                     <li>
-                        <a href="https://www.instagram.com" target="_blank">
+                        <a href="" id="footer_instagram_link" target="_blank">
                             <img src="../../imagens/Instagram_icon.png" alt="Instagram" class="iconeLink"> 
                             <span>Instagram</span>
                         </a>
@@ -136,39 +115,209 @@
     </footer>
 
     <script>
-        // Atualiza o ano automaticamente
+        // 1. Configurações Iniciais
+        // IMPORTANTE: Substitua pela sua URL de publicação (CSV) da aba Experimentos
+        const URL_PLANILHA_EXP = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=0&single=true&output=csv'; 
+        const AREA_ATUAL = 'quimica'; 
+        
+        let dadosExperimentos = {}; 
+        let intervaloModal; 
+
+        // 2. Conversão de Link do Google Drive para Renderização
+        function converterLinkDrive(url) {
+            if (!url) return "";
+            let link = url.trim().replace(/^"|"$/g, '');
+            if (link.includes("drive.google.com")) {
+                const match = link.match(/\/d\/(.+?)\/(view|edit|share|usp)?/);
+                if (match && match[1]) {
+                    return `http://googleusercontent.com/profile/picture/d/${match[1]}`;
+                }
+            }
+            return link;
+        }
+
+        // 3. Carregamento e Filtro da Planilha
+        async function carregarExperimentos() {
+            try {
+                const resposta = await fetch(URL_PLANILHA_EXP);
+                const texto = await resposta.text();
+                // Separa as linhas tratando vírgulas dentro de aspas
+                const linhas = texto.split(/\r?\n/).filter(l => l.trim() !== "").map(l => l.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
+
+                const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
+                const dados = linhas.slice(1);
+
+                const idxId = cabecalho.indexOf('id_experimento');
+                const idxArea = cabecalho.indexOf('area');
+                const idxSubArea = cabecalho.indexOf('sub_area');
+                const idxTitulo = cabecalho.indexOf('titulo');
+                const idxImgPri = cabecalho.indexOf('imagem_principal');
+                const idxImgSec = cabecalho.indexOf('imagens_secundarias');
+                const idxDescCurta = cabecalho.indexOf('descricao_curta');
+                const idxDescLonga = cabecalho.indexOf('descricao_longa');
+                const idxStatus = cabecalho.indexOf('status');
+
+                const grade = document.querySelector('.grade-experimentos');
+                grade.innerHTML = '';
+
+                dados.forEach(linha => {
+                    const areaPlanilha = linha[idxArea].replace(/^"|"$/g, '').trim().toLowerCase();
+                    const status = linha[idxStatus].replace(/^"|"$/g, '').trim().toLowerCase();
+
+                    // Filtra pela área específica da página e se está ativo
+                    if (areaPlanilha === AREA_ATUAL && status === 'ativo') {
+                        const id = linha[idxId].replace(/^"|"$/g, '').trim();
+                        const titulo = linha[idxTitulo].replace(/^"|"$/g, '').trim();
+                        const imgPrincipal = converterLinkDrive(linha[idxImgPri]);
+
+                        // Armazena no objeto para o modal
+                        dadosExperimentos[id] = {
+                            titulo: titulo,
+                            subArea: linha[idxSubArea].replace(/^"|"$/g, '').trim(),
+                            imgSecundarias: linha[idxImgSec].replace(/^"|"$/g, '').trim(),
+                            descLonga: linha[idxDescLonga].replace(/^"|"$/g, '').trim()
+                        };
+
+                        // Criação do Card
+                        const card = document.createElement('div');
+                        card.className = 'card-exp';
+                        card.onclick = () => abrirModal(id);
+                        card.innerHTML = `
+                            <div class="imagem-container">
+                                <img src="${imgPrincipal || '../../imagens/favicon.png'}" alt="${titulo}">
+                            </div>
+                            <h3>${titulo}</h3>
+                            <p>${linha[idxDescCurta].replace(/^"|"$/g, '').trim()}</p>
+                        `;
+                        grade.appendChild(card);
+                    }
+                });
+            } catch (e) {
+                console.error("Erro ao carregar dados da planilha:", e);
+            }
+            
+        }
+
+        // 4. Funções do Modal
+        function abrirModal(id) {
+            const modal = document.getElementById('modalExperimento');
+            const container = document.getElementById('detalhesExp');
+            const dado = dadosExperimentos[id];
+
+            // Trata as imagens secundárias (separadas por ;)
+            const linksSec = dado.imgSecundarias.split(';').map(l => converterLinkDrive(l)).filter(l => l !== "");
+            let fotosHtml = '';
+            
+            if (linksSec.length > 0) {
+                fotosHtml = linksSec.map((url, i) => 
+                    `<img src="${url}" class="fotoSlider ${i === 0 ? 'active' : ''}">`
+                ).join('');
+            }
+
+            container.innerHTML = `
+                <div class="divSliderFotosModal">
+                    ${fotosHtml}
+                </div>
+                <h2 class="tituloModal">${dado.titulo}</h2>
+                <h4 class="subAreaModal">${dado.subArea}</h4>
+                <div class="textoLongaModal">${dado.descLonga}</div>
+            `;
+
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden"; // Desativa scroll do fundo
+
+            // Inicia carrossel interno se houver + de 1 foto
+            if (linksSec.length > 1) {
+                let atual = 0;
+                const fotos = container.querySelectorAll('.fotoSlider');
+                intervaloModal = setInterval(() => {
+                    fotos[atual].classList.remove('active');
+                    atual = (atual + 1) % fotos.length;
+                    fotos[atual].classList.add('active');
+                }, 4000);
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modalExperimento').style.display = "none";
+            document.body.style.overflow = "auto"; // Reativa scroll do fundo
+            clearInterval(intervaloModal); 
+        }
+
+        // Fecha modal ao clicar fora do conteúdo branco
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalExperimento');
+            if (event.target == modal) {
+                fecharModal();
+            }
+        }
+
+        // Atualiza ano no rodapé e carrega experimentos
         document.getElementById('anoAtual').textContent = new Date().getFullYear();
+        document.addEventListener('DOMContentLoaded', carregarExperimentos);
     </script>
 
     <script>
-    const dadosExperimentos = {
-    'exp1': {
-        titulo: 'Reação de Maillard',
-        imagem: '../../imagens/experimento1.jpg',
-        texto: 'Aqui vai a explicação detalhada do experimento de química, materiais utilizados e a ciência por trás dele, similar ao estilo de leitura do Strata.'
-    }
-    // Adicione outros IDs conforme os cards criados
-};
-
-function abrirModal(id) {
-    const modal = document.getElementById('modalExperimento');
-    const container = document.getElementById('detalhesExp');
-    const dado = dadosExperimentos[id];
-
-    container.innerHTML = `
-        <img src="${dado.imagem}" style="width:100%; border-radius:8px; margin-bottom:20px;">
-        <h2 style="color:rgb(0,132,74); margin-bottom:15px;">${dado.titulo}</h2>
-        <div style="line-height:1.6; text-align:justify;">${dado.texto}</div>
-    `;
-
-    modal.style.display = "block";
-    document.body.style.overflow = "hidden"; // Trava o scroll do fundo
-}
-
-function fecharModal() {
-    document.getElementById('modalExperimento').style.display = "none";
-    document.body.style.overflow = "auto";
-}
+        function toggleMenu() {
+            const menu = document.getElementById('menuPrincipal');
+            menu.classList.toggle('active'); 
+        }
     </script>
+
+    <script>
+    // Script para atualizar informações de contato via Planilha (Aba Equipe)
+    const URL_PLANILHA_CONTATO = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdWpPHPE4tuvFcGnh1UXxhlv5bn_7UvVxWDMfpTKWeBOVH5YIl7D2Kp0WrGpFeZDb39CPEMD_BjvXg/pub?gid=1906912128&single=true&output=csv';
+
+    async function carregarDadosContatoFooter() {
+        try {
+            const resposta = await fetch(URL_PLANILHA_CONTATO);
+            const dadosTexto = await resposta.text();
+            
+            // Converte CSV em Array considerando vírgulas dentro de aspas
+            const linhas = dadosTexto.split(/\r?\n/).filter(l => l.trim() !== "").map(l => l.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
+            const cabecalho = linhas[0].map(c => c.replace(/^"|"$/g, '').trim().toLowerCase());
+            
+            // Mapeia os índices das colunas necessárias
+            const idxTelefone = cabecalho.indexOf('telefone');
+            const idxEmail = cabecalho.indexOf('email');
+            const idxInstagram = cabecalho.indexOf('instagram');
+
+            if (linhas.length > 1) {
+                const dados = linhas[1]; // Pega a primeira linha de dados após o cabeçalho
+
+                // 1. Atualiza Telefone
+                if (idxTelefone !== -1) {
+                    const tel = dados[idxTelefone].replace(/^"|"$/g, '').trim();
+                    const elTel = document.getElementById('footer_telefone');
+                    if (elTel) elTel.textContent = tel;
+                }
+
+                // 2. Atualiza E-mail
+                if (idxEmail !== -1) {
+                    const email = dados[idxEmail].replace(/^"|"$/g, '').trim();
+                    const elEmailText = document.getElementById('footer_email');
+                    const elEmailLink = document.getElementById('footer_email_link');
+                    if (elEmailText) elEmailText.textContent = email;
+                    if (elEmailLink) elEmailLink.href = `mailto:${email}`;
+                }
+
+                // 3. Atualiza Link do Instagram
+                if (idxInstagram !== -1) {
+                    const insta = dados[idxInstagram].replace(/^"|"$/g, '').trim();
+                    const elInstaLink = document.getElementById('footer_instagram_link');
+                    if (elInstaLink && insta) {
+                        // Garante que o link tenha o protocolo completo
+                        elInstaLink.href = insta.startsWith('http') ? insta : `https://instagram.com/${insta.replace('@','')}`;
+                    }
+                }
+            }
+        } catch (erro) {
+            console.error("Erro ao carregar dados de contato do footer:", erro);
+        }
+    }
+
+    // Inicializa a carga ao abrir a página
+    document.addEventListener('DOMContentLoaded', carregarDadosContatoFooter);
+</script>
 </body>
 </html>

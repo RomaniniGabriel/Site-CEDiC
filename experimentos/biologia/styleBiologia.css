@@ -1,6 +1,6 @@
 /* Banner Superior */
 .banner {
-    background-image: url(../../imagens/bannerQuimica.jpg);
+    background-image: url(../../imagens/bannerBiologia.jpg);
     background-repeat: no-repeat;
     background-attachment: local;
     background-size: cover;
@@ -176,4 +176,3 @@
     color: #333;
     font-size: 1.05rem;
 }
-
