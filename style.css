@@ -710,6 +710,9 @@ h4{ /*nome/título da área dos cards*/
 #textoConvite {
     /* Garante que o texto não escape da área preta central */
     max-width: 60%;
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 1.5rem;
+    padding: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -723,12 +726,13 @@ h4{ /*nome/título da área dos cards*/
 #textoConvite p { /*edição da frase final dentro da div da seção*/
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: var(--text);
+    color: white
 }
 
 #textoConvite p strong { /*edição do negrito na frase final dentro da div da seção*/
     font-size: 2rem;
     color: rgb(0, 132, 74); /* Verde padrão do site */
+    text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.586);
 }
 
 .divBotaoFinal { /*edição da div que contém o botão, e que está dentro da div principal da seção*/
